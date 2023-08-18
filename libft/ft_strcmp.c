@@ -1,37 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd_bt.c                                           :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/18 18:34:52 by hbechri           #+#    #+#             */
-/*   Updated: 2023/08/18 18:34:53 by hbechri          ###   ########.fr       */
+/*   Created: 2023/08/18 16:11:43 by hbechri           #+#    #+#             */
+/*   Updated: 2023/08/18 16:11:58 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "libft.h"
 
-
-#include <stdio.h>
-#include <unistd.h>
-
-typedef enum e_excode
+int	ft_strcmp(const char *s1, const char *s2)
 {
-	EX_SUCCESS = 0,
-	EX_FAILURE = 1,
-	EX_BT_FAIL = 2,
-	EX_CNOT_EXEC = 126,
-	EX_CNOT_FIND = 127,
-	EX_BY_SIGNAL = 128,
-	EX_OUTOF_RANGE = 255
-}	t_excode;
+	size_t			i;
+	unsigned char	*str1;
+	unsigned char	*str2;
 
-int	pwd(void)
-{
-	char	*pwd;
-
-	pwd = getcwd(0, 0);
-	printf("%s\n", pwd);
-	free (pwd);
-	return (EX_SUCCESS);
+	i = 0;
+	str1 = (unsigned char *)s1;
+	str2 = (unsigned char *)s2;
+	if (!str1 || !str2)
+		return (0);
+	while (s1[i] && s2[i])
+	{
+		if (str1[i] != str2[i])
+			break ;
+		i++;
+	}	
+	if (str1[i] > str2[i])
+		return (1);
+	else if (str1[i] < str2[i])
+		return (-1);
+	return (0);
 }

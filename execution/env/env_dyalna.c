@@ -50,6 +50,21 @@ void	delete_node(t_env_lst *node)
 	free(node);
 }
 
+void free_list(t_env_lst **env_lst)
+{
+	t_env_lst *tmp;
+	t_env_lst *node;
+
+	node = *env_lst;
+	while(node)
+	{
+		tmp = node->next;
+		delete_node(node);
+		node = tmp;
+	}
+	free(env_lst);
+}
+
 t_env_lst	**env_dyalna(char **env)
 {
 	int i;
@@ -75,28 +90,13 @@ t_env_lst	**env_dyalna(char **env)
 	return (env_lst);
 }
 
-void free_list(t_env_lst **env_lst)
-{
-	t_env_lst *tmp;
-	t_env_lst *node;
-
-	node = *env_lst;
-	while(node)
-	{
-		tmp = node->next;
-		delete_node(node);
-		node = tmp;
-	}
-	free(env_lst);
-}
-
-int main(int ac, char **av, char **env)
-{
-	(void)ac;
-	(void)av;
-	t_env_lst **env_lst;
-	env_lst = env_dyalna(env);
-	env_bt(env_lst);
-	free_list(env_lst);
-	return (0);
-}
+// int main(int ac, char **av, char **env)
+// {
+// 	(void)ac;
+// 	(void)av;
+// 	t_env_lst **env_lst;
+// 	env_lst = env_dyalna(env);
+// 	env_bt(env_lst);
+// 	free_list(env_lst);
+// 	return (0);
+// }

@@ -1,31 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cd_bt.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/08/18 18:34:27 by hbechri           #+#    #+#             */
+/*   Updated: 2023/08/18 18:34:27 by hbechri          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+
+
 #include <unistd.h>
 #include "../env/env_header.h"
+#include "../../libft/libft.h"
 
-int	ft_strcmp(const char *s1, const char *s2)
-{
-	size_t			i;
-	unsigned char	*str1;
-	unsigned char	*str2;
+int g_exit = 0;
 
-	i = 0;
-	str1 = (unsigned char *)s1;
-	str2 = (unsigned char *)s2;
-	if (!str1 || !str2)
-		return (0);
-	while (s1[i] && s2[i])
-	{
-		if (str1[i] != str2[i])
-			break ;
-		i++;
-	}	
-	if (str1[i] > str2[i])
-		return (1);
-	else if (str1[i] < str2[i])
-		return (-1);
-	return (0);
-}
-
-void	*env_search(t_env_lst **env)
+void	*home_path(t_env_lst **env)
 {
 	t_env_lst	*tmp;
 
@@ -39,7 +32,7 @@ void	*env_search(t_env_lst **env)
 	return (NULL);
 }
 
-void	pwd_and_old_pwd(t_env_lst *env, char *old_pwd, char *current_pwd)
+void	old_and_current_wd(t_env_lst *env, char *old_pwd, char *current_pwd)
 {
 	t_env_lst	*tmp;
 
@@ -60,29 +53,30 @@ void	pwd_and_old_pwd(t_env_lst *env, char *old_pwd, char *current_pwd)
 	}
 }
 
-int	get_env(t_env_lst *env)
+int	get_home_dir(t_env_lst *env)
 {
 	char	*home;
 
-	home = env_search(&env);
+	home = home_path(&env);
 	if (!home)
 	{
 		ft_putstr_fd("HOME not sett\n", 2);
-		g_exit_status = 1;
-		return (g_exit_status);
+		g_exit = 1;
+		return (g_exit);
 	}
 	if (chdir(home) == 0)
-		g_exit_status = 0;
+		g_exit = 0;
+	//to hundle export home="sfsfsf" or unset home and export home="sfsfsf"
 	else
 	{
-		ft_putstr_fd("HOME not set\n", 2);
-		g_exit_status = 1;
-		return (g_exit_status);
+		perror("haha"); //cd : no such file or directory
+		g_exit = 1;
+		return (g_exit);
 	}
-	return (g_exit_status);
+	return (g_exit);
 }
 
-int	ft_cd(char **av, t_env_lst *env)
+int	cd_bt(char **av, t_env_lst *env)
 {
 	char	*old_pwd;
 	char	*current_pwd;
@@ -94,29 +88,31 @@ int	ft_cd(char **av, t_env_lst *env)
 	old_pwd = getcwd(buf, 0);
 	free(buf);
 	if (av[1] == NULL || av[1][0] == '\0')
-		get_env(env);
+		get_home_dir(env);
 	else if (chdir(av[1]) == 0)
 	{
 		current_pwd = getcwd(buf, 0);
-		pwd_and_old_pwd(env, old_pwd, current_pwd);
-		g_exit_status = 0;
-		return (g_exit_status);
+		old_and_current_wd(env, old_pwd, current_pwd);
+		g_exit = 0;
+		return (g_exit);
 	}
 	else
 	{
-		perror("");
-		g_exit_status = 1;
+		ft_putstr_fd("cd: ", 2);
+		ft_putstr_fd(av[1], 2);
+		perror(" ");
+		g_exit = 1;
 	}
-	return (g_exit_status);
+	return (g_exit);
 }
 
-int main(int ac, char **av) {
+int main(int ac, char **av, char **env) {
     t_env_lst *env = NULL; // Initialize your environment linked list
 
     // Call your functions here as needed
     // Example usage:
     //char *av[] = {"ft_cd", "builtins/haha", NULL}; // Example av array
-    int result = ft_cd(av, env);
+    int result = cd_bt(av, env);
     
     if (result == 0) {
         printf("cd successful\n");
