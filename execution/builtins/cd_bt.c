@@ -1,4 +1,4 @@
-
+#include <unistd.h>
 #include "../env/env_header.h"
 
 int	ft_strcmp(const char *s1, const char *s2)
@@ -116,7 +116,7 @@ int main(int ac, char **av) {
     // Call your functions here as needed
     // Example usage:
     //char *av[] = {"ft_cd", "builtins/haha", NULL}; // Example av array
-    int result = ft_cd(&av[1], env);
+    int result = ft_cd(av, env);
     
     if (result == 0) {
         printf("cd successful\n");
