@@ -6,7 +6,7 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 21:35:24 by hbechri           #+#    #+#             */
-/*   Updated: 2023/08/19 21:45:15 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/08/20 14:22:35 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,12 @@ char *value(char *cmd)
 	i = 0;
 	while (cmd[i] && cmd[i] != '=')
 		i++;
-	value = ft_substr(cmd, i + 1, ft_strlen(cmd));
+	if (cmd[i] == '=' && cmd[i + 1] == '\0')
+		value = ft_strdup("\r");
+	else if (cmd[i] == '=' && cmd[i + 1] != '\0')
+		value = ft_substr(cmd, i + 1, ft_strlen(cmd));
+	else
+		value = ft_strdup("\0");
 	return (value);
 }
 
@@ -170,6 +175,7 @@ void	export_bt(char **cmd, t_env_lst *env)
 	t_env_lst	*tmp;
 
 	tmp = env;
+	//static int flag = 1;
 	
 	if (!cmd[1])
 	{
@@ -177,24 +183,33 @@ void	export_bt(char **cmd, t_env_lst *env)
 		{
 			ft_putstr_fd("declare -x ", 1);
 			ft_putstr_fd(tmp->key, 1);
-			if (tmp->value && tmp->value[0] != '\0')
+			if(tmp->value[0] == '\r')
+				ft_putstr_fd("=\"\"", 1);
+			else if (tmp->value && tmp->value[0] != '\0')
 			{
 				ft_putstr_fd("=\"", 1);
 				ft_putstr_fd(tmp->value, 1);
 				ft_putstr_fd("\"", 1);
 			}
+			// else if (flag == 1)
+			// {
+			// 	ft_putstr_fd("=\"\"", 1);
+			// 	flag = 0;
+			// }
 			ft_putstr_fd("\n", 1);
 			tmp = tmp->next;
 		}
 	}
 	else
 	{
-		int flag = 0;
+		//flag = 0;
 		char *key;
 		char *val;
 		int i = 1;
 		while (cmd[i])
 		{
+			// if(is_separator(cmd[i]))
+			// 	flag = 1;
 			key = keyword(cmd[i]);
 			val = value(cmd[i]);
 			tmp = env;
@@ -212,6 +227,11 @@ void	export_bt(char **cmd, t_env_lst *env)
 				{
 					ft_putstr_fd("export: `", 2);
 					ft_putstr_fd(key, 2);
+					if (val)
+					{
+						ft_putstr_fd("=", 2);
+						ft_putstr_fd(val, 2);
+					}
 					ft_putstr_fd("': not a valid identifier\n", 2);
 					break ;
 				}
@@ -230,7 +250,7 @@ int main(int ac, char **av, char **env) {
 	env_lst = env_dyalna(env);
 	
 	printf("\nTest 1: export\n\n");
-    char *testCmd1[] = { "export","y4==", NULL };
+    char *testCmd1[] = { "export","tt=","ttt=","tttt", NULL };
     export_bt(testCmd1, *env_lst);
 
 	printf("Initial export variables:\n\n");
