@@ -155,7 +155,7 @@ int main(int ac,char **av, char **env) {
 	t_env_lst **env_lst;
 	env_lst = env_dyalna(env);
 
-    char *command[] = {"rm" ,"-rf", "haha", NULL};  // Example command
+    char *command[] = {"cat" , NULL};  // Example command
     exec_cmd(command, *env_lst);
 
     return 0;

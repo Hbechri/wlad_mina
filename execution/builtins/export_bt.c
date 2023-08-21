@@ -6,7 +6,7 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 21:35:24 by hbechri           #+#    #+#             */
-/*   Updated: 2023/08/20 14:22:35 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/08/20 16:10:55 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,6 +170,20 @@ int	is_separator(char *str)
 	return (0);
 }
 
+int	key_with_plus(char *key)
+{
+	int i;
+
+	i = 0;
+	while (key[i])
+	{
+		if (key[i] == '+' && key[i + 1] == '\0')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
 void	export_bt(char **cmd, t_env_lst *env)
 {
 	t_env_lst	*tmp;
@@ -215,7 +229,18 @@ void	export_bt(char **cmd, t_env_lst *env)
 			tmp = env;
 			while (tmp)
 			{
-				if ((non_numeric(key[0]) == 1) && (alphanum_c(key[1])))
+				if (ft_strcmp(key, tmp->key) == 0)
+				{
+					free(tmp->value);
+					tmp->value = ft_strdup(val);
+					break ;
+				}
+				else if (key_with_plus(key) == 1 && ft_strcmp(key, tmp->key) == 1)
+				{
+					tmp->value = ft_strjoin(tmp->value, val);
+					break ;
+				}
+				else if ((non_numeric(key[0]) == 1) && (alphanum_c(key[1])))
 				{
 					if(val == NULL)
 						ft_lstadd_back(&tmp, ft_lstnew(key, NULL));
@@ -223,6 +248,7 @@ void	export_bt(char **cmd, t_env_lst *env)
 						ft_lstadd_back(&tmp, ft_lstnew(key, val));
 					break ;
 				}
+				
 				else
 				{
 					ft_putstr_fd("export: `", 2);
@@ -250,7 +276,7 @@ int main(int ac, char **av, char **env) {
 	env_lst = env_dyalna(env);
 	
 	printf("\nTest 1: export\n\n");
-    char *testCmd1[] = { "export","tt=","ttt=","tttt", NULL };
+    char *testCmd1[] = { "export","USER+=TAHAZAML", NULL };
     export_bt(testCmd1, *env_lst);
 
 	printf("Initial export variables:\n\n");
