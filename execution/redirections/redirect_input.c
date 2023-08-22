@@ -57,3 +57,4 @@ void	redirect_input(t_cmd  *cmd)
 		in = in->next;
 	}
 }
+

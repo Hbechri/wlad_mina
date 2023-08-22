@@ -53,6 +53,10 @@ void    redirect_output(t_cmd  *cmd)
 	}
 }
 
+// ls > $USER ==> must expand $USER to the user name
+// ls > "$USER" ==> must expand $USER to the user name
+// ls > '$USER' ==> must NOOOOOOT expand $USER to the user name
+
 // #include <unistd.h>
 // #include <fcntl.h>
 // #include <stdlib.h>  // For malloc, free
