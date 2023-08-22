@@ -35,25 +35,22 @@ typedef struct s_cmd
 	struct s_cmd *next;
 } t_cmd;
 
-
-// <
-
-void	redirect_input(t_cmd  *cmd)
+void	heredoc(t_cmd *cmd)
 {
-	t_redirections  *in;
+	t_redirections *heredoc;
 
-	in = cmd->r_in;
-	while (in)
+	heredoc = cmd->heredoc;
+	while (heredoc)
 	{
-		if (in->type == IN_ID)
+		if (heredoc->type == HERDOC_ID)
 		{
-			in->fd = open(in->file, O_RDONLY);
-			if (in->fd == -1) // error
+			heredoc->fd = open(heredoc->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			if (heredoc->fd == -1) // error
 				return ;
-			dup2(in->fd, STDIN_FILENO);
-			close(in->fd);
+			dup2(heredoc->fd, STDOUT_FILENO);
+			close(heredoc->fd);
 			break ;
 		}
-		in = in->next;
+		heredoc = heredoc->next;
 	}
 }

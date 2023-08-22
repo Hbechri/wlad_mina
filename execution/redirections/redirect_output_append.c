@@ -1,3 +1,4 @@
+
 #include <unistd.h>
 #include <fcntl.h>
 
@@ -33,29 +34,30 @@ typedef struct s_cmd
 	struct s_cmd *next;
 } t_cmd;
 
-void    redirect_output(t_cmd  *cmd)
+void    redirect_output_append(t_cmd  *cmd)
 {
-    t_redirections  *out;
+    t_redirections  *append;
 
-	out = cmd->r_out;
-	while (out)
-	{
-		if (out->type == OUT_ID)
-		{
-			out->fd = open(out->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			if (out->fd == -1) // error
-				return ;
-			dup2(out->fd, STDOUT_FILENO);
-			close(out->fd);
-			break ;
-		}
-		out = out->next;
-	}
+    append = cmd->r_append;
+    while (append)
+    {
+        if (append->type == APPEND_ID)
+        {
+            append->fd = open(append->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+            if (append->fd == -1) // error
+                return ;
+            dup2(append->fd, STDOUT_FILENO);
+            close(append->fd);
+            break ;
+        }
+        append = append->next;
+    }
 }
 
-// #include <unistd.h>
-// #include <fcntl.h>
-// #include <stdlib.h>  // For malloc, free
+
+#include <unistd.h>
+#include <fcntl.h>
+#include <stdlib.h>  // For malloc, free
 
 // int main() {
 //     // Example usage of the structures and functions
@@ -64,25 +66,25 @@ void    redirect_output(t_cmd  *cmd)
 //     t_cmd *cmd = malloc(sizeof(t_cmd));
 //     cmd->cmd = malloc(sizeof(char*) * 3);
 //     cmd->cmd[0] = "ls";
-//     cmd->cmd[1] = "-la";
-//     cmd->cmd[2] = NULL;  // Command array must be NULL-terminated
+//     // cmd->cmd[1] =;
+//     cmd->cmd[1] = NULL;  // Command array must be NULL-terminated
     
 //     // Creating and adding redirections
-//     t_redirections *out = malloc(sizeof(t_redirections));
-//     out->file = "output1.txt";
-//     out->fd = -1;
-//     out->type = OUT_ID;
-//     out->next = NULL;
-//     cmd->r_out = out;
+//     t_redirections *r_out = malloc(sizeof(t_redirections));
+//     r_out->file = "output.txt";
+//     r_out->fd = -1;
+//     r_out->type = APPEND_ID;
+//     r_out->next = NULL;
+//     cmd->r_append = r_out;
     
 //     // Calling redirection function
-//     redirect_output(cmd);
+//     redirect_output_append(cmd);
     
 //     // Executing the command (this is just an example, actual execution may differ)
 //     execvp(cmd->cmd[0], cmd->cmd);
     
 //     // Freeing memory (you should free allocated memory after usage)
-//     free(out);
+//     free(r_out);
 //     free(cmd->cmd);
 //     free(cmd);
     
