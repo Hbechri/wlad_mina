@@ -2,42 +2,38 @@
 #include <fcntl.h>
 
 
-enum {
+typedef	enum e_type
+{
         WORD_ID,
         PIPE_ID,
         IN_ID,
         OUT_ID,
-        SPACE_ID,
-        DOUBLE_Q_ID,
-        SINGLE_Q_ID,
         APPEND_ID,
         HERDOC_ID,
-        EXPAND_ID,
-};
+} t_type;
 
-typedef struct s_redirections
+
+typedef struct s_redirection
 {
     char *file;
     int fd;
 	int	type;
-    struct s_redirections *next;
-} t_redirections;
+    struct s_redirection *next;
+} t_redirection;
 
-typedef struct s_cmd
+typedef struct s_command
 {
-	char **cmd;
-	t_redirections *r_in;
-	t_redirections *r_out;
-	t_redirections *r_append;
-	t_redirections *heredoc;
-	struct s_cmd *next;
-} t_cmd;
+	char			**cmd;
+    t_type             type;
+	t_redirection	*redirection;
+	struct s_command	*next;
+}				t_command;
 
-void    redirect_output(t_cmd  *cmd)
+void    redirect_output(t_command  *cmd)
 {
-    t_redirections  *out;
+    t_redirection  *out;
 
-	out = cmd->r_out;
+	out = cmd->redirection;
 	while (out)
 	{
 		if (out->type == OUT_ID)

@@ -1,48 +1,23 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirect_input.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/06 19:00:28 by hbechri           #+#    #+#             */
+/*   Updated: 2023/09/06 19:02:14 by hbechri          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include <unistd.h>
-#include <fcntl.h>
-
-
-enum {
-        WORD_ID,
-        PIPE_ID,
-        IN_ID,
-        OUT_ID,
-        SPACE_ID,
-        DOUBLE_Q_ID,
-        SINGLE_Q_ID,
-        APPEND_ID,
-        HERDOC_ID,
-        EXPAND_ID,
-};
-
-
-typedef struct s_redirections
-{
-    char *file;
-    int fd;
-	int	type;
-    struct s_redirections *next;
-} t_redirections;
-
-typedef struct s_cmd
-{
-	char **cmd;
-	t_redirections *r_in;
-	t_redirections *r_out;
-	t_redirections *r_append;
-	t_redirections *heredoc;
-	struct s_cmd *next;
-} t_cmd;
-
-
+#include "../../minishell.h"
 // <
 
-void	redirect_input(t_cmd  *cmd)
+void	redirect_input(t_command  *cmd)
 {
-	t_redirections  *in;
+	t_redirection  *in;
 
-	in = cmd->r_in;
+	in = cmd->redirection;
 	while (in)
 	{
 		if (in->type == IN_ID)

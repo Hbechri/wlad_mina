@@ -3,30 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: amakhrou <amakhrou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/29 15:35:03 by hbechri           #+#    #+#             */
-/*   Updated: 2022/11/14 21:53:42 by hbechri          ###   ########.fr       */
+/*   Created: 2022/11/06 18:18:57 by amakhrou          #+#    #+#             */
+/*   Updated: 2022/11/08 16:34:16 by amakhrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putnbr_fd(int nb, int fd)
+void	ft_putnbr_fd(int n, int fd)
 {
-	long	nbr;
+	long	nb;
 
-	nbr = nb;
+	nb = n;
 	if (nb < 0)
 	{
 		ft_putchar_fd('-', fd);
-		nbr = nbr * -1;
+		nb = nb * -1;
 	}
-	if (nbr > 9)
+	if (nb > 9)
 	{
-		ft_putnbr_fd(nbr / 10, fd);
-		ft_putchar_fd((nbr % 10) + 48, fd);
+		ft_putnbr_fd(nb / 10, fd);
+		ft_putchar_fd((nb % 10) + '0', fd);
 	}
 	else
-		ft_putchar_fd(nbr + 48, fd);
+		ft_putchar_fd(nb + '0', fd);
 }

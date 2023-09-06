@@ -1,83 +1,126 @@
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <unistd.h>
-#include <fcntl.h>
-//#include "../../get_next_line/get_next_line.h"
-#include "../../libft/libft.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   heredoc.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/06 18:59:23 by hbechri           #+#    #+#             */
+/*   Updated: 2023/09/06 19:02:48 by hbechri          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-enum {
-        WORD_ID,
-        PIPE_ID,
-        IN_ID,
-        OUT_ID,
-        SPACE_ID,
-        DOUBLE_Q_ID,
-        SINGLE_Q_ID,
-        APPEND_ID,
-        HERDOC_ID,
-        EXPAND_ID,
-};
+#include "../../minishell.h"
 
-
-typedef struct s_redirections
+char	*remove_quotes(char *str)
 {
-    char *file;
-    int fd;
-	int	type;
-    struct s_redirections *next;
-} t_redirections;
+	int i;
+	int j;
+	char *tmp;
 
-typedef struct s_cmd
-{
-	char **cmd;
-	t_redirections *r_in;
-	t_redirections *r_out;
-	t_redirections *r_append;
-	t_redirections *heredoc;
-	struct s_cmd *next;
-} t_cmd;
-
-
-int	is_single_or_double_quote(char *str, int i)
-{
-	int i = 0;
+	i = 0;
+	j = 0;
+	tmp = ft_calloc(sizeof(char), (ft_strlen(str) + 1));
 	while (str[i])
 	{
 		if (str[i] == '\'' || str[i] == '\"')
-			return (1);
-		i++;
+			i++;
+		else
+		{
+			tmp[j] = str[i];
+			i++;
+			j++;
+		}
 	}
-	return (0);
+	tmp[j] = '\0';
+	return (tmp);
 }
 
-
-void	heredoc(t_cmd *cmd)
+char	*heredoc_file_name(void)
 {
-	t_redirections *heredoc;
+	int fd;
+	char *file_name;
+	char *tmp;
+	int random;
+	char *random_str;
+
+	fd = open("/dev/random", O_RDONLY);
+	read(fd, &random, sizeof(rand));
+	// printf("random 9bl l9issma = %d\n", random);
+	if (random < 0)
+		random *= -1;
+	// random = random / 1000000;
+	// printf("random mora l9issma = %d\n", random);
+	random_str = ft_itoa(random);
+	tmp = ft_strjoin("/tmp/", random_str);
+	file_name = ft_strdup(tmp);
+	free(tmp);
+	free(random_str);
+	close(fd);
+	return(file_name);
+}
+
+char	*ignore_spaces(char *str)
+{
+	char	*without_spaces;
+	int		i;
+
+	i = 0;
+	while (str[i] && (str[i] == ' ' || str[i] == '\t'))
+		i++;
+	without_spaces = ft_calloc(sizeof(char ), ((ft_strlen(str) - i) + 1));
+	ft_strcpy(without_spaces, str + i);
+	return (without_spaces);
+}
+
+void	heredoc(t_command *cmd)
+{
+	t_redirection *heredoc;
 	char *line;
 	char *delimiter;
+	char *heredoc_file;
+	pid_t pid;
+	char *delimiter_tmp1;
+	char *delimiter_tmp2;
 
-	heredoc = cmd->heredoc;
+	heredoc = cmd->redirection;
 	while (heredoc)
 	{
 		if (heredoc->type == HERDOC_ID)
 		{
+			heredoc_file = heredoc_file_name();
+			heredoc->heredoc_file = ft_strdup(heredoc_file);
+			free(heredoc_file);
 			heredoc->fd = open(heredoc->file, O_RDWR | O_CREAT | O_TRUNC, 0644);
-			delimiter = heredoc->file;
-			delimiter = ft_strtrim(delimiter, " ");
-			while (1)
+			delimiter_tmp1 = heredoc->file;
+			// printf("pid = %d\n", pid);
+			pid = fork();
+			if (pid == -1)
 			{
-				line = readline("> ");
-				if (!line)
-					break ;
-				if (ft_strcmp(line, delimiter) == 0)
-					break ;
-				
-				write(heredoc->fd, line, ft_strlen(line));
-				write(heredoc->fd, "\n", 1);
-				free(line);
+				perror("fork");
+				exit(1);
 			}
-			close(heredoc->fd);
+			if (pid == 0)
+			{
+				delimiter_tmp2 = ignore_spaces(delimiter_tmp1);
+				delimiter = remove_quotes(delimiter_tmp2);
+				while (1)
+				{
+					line = readline("> ");
+					if (!line)
+						break ;
+					if (ft_strcmp(line, delimiter) == 0)
+						break ;
+					if (line)
+						write(heredoc->fd, line, ft_strlen(line));
+					write(heredoc->fd, "\n", 1);
+					free(line);
+				}
+				free(delimiter);
+				close(heredoc->fd);
+			}
+			else
+				waitpid(pid, NULL, 0);
 		}
 		heredoc = heredoc->next;
 	}
@@ -87,23 +130,3 @@ void	heredoc(t_cmd *cmd)
 // if << '$USER' == should not expand
 // if << $USER == should expand
 // if << "$USER" == should not expand
-
-
-
-int main() {
-    // Create and initialize t_cmd and t_redirections structs
-    t_cmd *command = (t_cmd *)malloc(sizeof(t_cmd));
-    command->heredoc = (t_redirections *)malloc(sizeof(t_redirections));
-    command->heredoc->file = "    example.txt"; // Replace with your desired file name
-    command->heredoc->type = HERDOC_ID;
-    command->heredoc->next = NULL;
-
-    // Call heredoc function
-    heredoc(command);
-
-    // Clean up allocated memory
-    free(command->heredoc);
-    free(command);
-
-    return 0;
-}

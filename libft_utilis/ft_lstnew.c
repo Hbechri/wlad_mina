@@ -1,21 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isalpha.c                                       :+:      :+:    :+:   */
+/*   ft_lstnew.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amakhrou <amakhrou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/07 14:04:21 by amakhrou          #+#    #+#             */
-/*   Updated: 2022/11/07 17:34:01 by amakhrou         ###   ########.fr       */
+/*   Created: 2023/09/06 15:54:19 by amakhrou          #+#    #+#             */
+/*   Updated: 2023/09/06 15:55:47 by amakhrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../minishell.h"
 
-int	ft_isalpha(int c)
+t_env_lst	*ft_lstnew(char *keyword, char *value)
 {
-	if ((c >= 'a' && c <= 'z' )
-		|| (c >= 'A' && c <= 'Z'))
-		return (1);
-	return (0);
+	t_env_lst	*list;
+
+	list = (t_env_lst *)malloc((sizeof(t_env_lst)));
+	if (list == NULL)
+		return (NULL);
+	list->key = ft_strdup(keyword);
+	list->value = ft_strdup(value);
+	list->next = NULL;
+	return (list);
 }

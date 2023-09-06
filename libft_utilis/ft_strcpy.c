@@ -1,37 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   ft_strcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/18 16:11:43 by hbechri           #+#    #+#             */
-/*   Updated: 2023/08/18 16:11:58 by hbechri          ###   ########.fr       */
+/*   Created: 2023/09/06 18:58:46 by hbechri           #+#    #+#             */
+/*   Updated: 2023/09/06 18:58:51 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../minishell.h"
 
-int	ft_strcmp(const char *s1, const char *s2)
+char	*ft_strcpy(char *dst, const char *src)
 {
-	size_t			i;
-	unsigned char	*str1;
-	unsigned char	*str2;
+	int i;
 
 	i = 0;
-	str1 = (unsigned char *)s1;
-	str2 = (unsigned char *)s2;
-	if (!str1 || !str2)
-		return (0);
-	while (s1[i] && s2[i])
+	if (!src)
+		return (NULL);
+	while (src[i])
 	{
-		if (str1[i] != str2[i])
-			break ;
+		dst[i] = src[i];
 		i++;
-	}	
-	if (str1[i] > str2[i])
-		return (1);
-	else if (str1[i] < str2[i])
-		return (-1);
-	return (0);
+	}
+	dst[i] = 0;
+	return (dst);
 }

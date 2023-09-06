@@ -6,14 +6,11 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 18:34:47 by hbechri           #+#    #+#             */
-/*   Updated: 2023/08/18 18:34:48 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/06 18:52:52 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
-
-
-#include "../../libft/libft.h"
+#include "../../minishell.h"
 
 int	exit_bt(char	**cmd)
 {
@@ -85,40 +82,4 @@ int	exit_bt(char	**cmd)
 		}
 	}
 	return (0);
-}
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h> // For string functions
-// Include other necessary header files
-
-int main() {
-    char input[100];
-    char *cmd[10]; // Adjust the size as needed
-
-    while (1) {
-        printf("Enter a command: ");
-        fgets(input, sizeof(input), stdin);
-
-        // Tokenize input into cmd array
-        int i = 0;
-        char *token = strtok(input, " \t\n");
-        while (token != NULL) {
-            cmd[i++] = token;
-            token = strtok(NULL, " \t\n");
-        }
-        cmd[i] = NULL; // Null-terminate the array
-
-        if (i > 0) {
-            if (strcmp(cmd[0], "exit") == 0) {
-                exit_bt(cmd); // Call your exit_bt function here
-                //break; // Exit the loop
-            } else {
-                // Handle other commands or perform other tasks
-                printf("Command not recognized.\n");
-            }
-        }
-    }
-
-    return 0;
 }

@@ -6,11 +6,11 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/17 18:58:53 by hbechri           #+#    #+#             */
-/*   Updated: 2023/08/17 19:50:42 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/06 18:52:36 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../env/env_header.h"
+#include "../../minishell.h"
 
 void	env_bt(t_env_lst **env_lst)
 {

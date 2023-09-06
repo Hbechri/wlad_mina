@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: amakhrou <amakhrou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/27 11:38:06 by hbechri           #+#    #+#             */
-/*   Updated: 2022/11/15 15:04:38 by hbechri          ###   ########.fr       */
+/*   Created: 2022/10/08 14:58:00 by amakhrou          #+#    #+#             */
+/*   Updated: 2022/11/08 15:38:50 by amakhrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,27 @@
 
 int	ft_atoi(const char *str)
 {
-	unsigned long long	result;
-	int					sign;
+	int					o;
+	int					c;
+	unsigned long long	p;
 
-	result = 0;
-	sign = 1;
-	while (*str == 32 || (*str >= 9 && *str <= 13))
-		str++;
-	if (*str == '-')
-		sign *= -1;
-	if (*str == '-' || *str == '+')
-		str++;
-	while (*str >= '0' && *str <= '9')
+	o = 0;
+	c = 1;
+	p = 0;
+	while ((str[o] >= 9 && str[o] <= 13) || (str[o] == 32))
+		o++;
+	if (str[o] == '-')
+		c = c * -1;
+	if (str[o] == '-' || str[o] == '+')
+		o++;
+	while (str[o] >= '0' && str[o] <= '9')
 	{
-		result = result * 10 + *str - '0';
-		str++;
+		p = p * 10 + (str[o] - '0');
+		o++;
 	}
-	if (result >= 9223372036854775807 && sign > 0)
+	if (p >= 9223372036854775807 && c > 0)
 		return (-1);
-	if (result > 9223372036854775807 && sign < 0)
+	if (p > 9223372036854775807 && c < 0)
 		return (0);
-	return (result * sign);
+	return (p * c);
 }

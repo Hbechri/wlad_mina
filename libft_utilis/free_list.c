@@ -1,21 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isalpha.c                                       :+:      :+:    :+:   */
+/*   free_list.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: amakhrou <amakhrou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/07 14:04:21 by amakhrou          #+#    #+#             */
-/*   Updated: 2022/11/07 17:34:01 by amakhrou         ###   ########.fr       */
+/*   Created: 2023/09/06 15:59:21 by amakhrou          #+#    #+#             */
+/*   Updated: 2023/09/06 16:05:52 by amakhrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../minishell.h"
 
-int	ft_isalpha(int c)
+void	free_list(t_env_lst **env_lst)
 {
-	if ((c >= 'a' && c <= 'z' )
-		|| (c >= 'A' && c <= 'Z'))
-		return (1);
-	return (0);
+	t_env_lst	*tmp;
+	t_env_lst	*node;
+
+	node = *env_lst;
+	while (node)
+	{
+		tmp = node->next;
+		delete_node(node);
+		node = tmp;
+	}
+	free(env_lst);
 }

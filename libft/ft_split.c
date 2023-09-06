@@ -3,76 +3,83 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: amakhrou <amakhrou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/14 11:29:12 by hbechri           #+#    #+#             */
-/*   Updated: 2022/11/15 14:51:38 by hbechri          ###   ########.fr       */
+/*   Created: 2022/11/01 15:11:27 by amakhrou          #+#    #+#             */
+/*   Updated: 2022/11/08 16:34:31 by amakhrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	words_num(const char *s, char c)
+int	c_w(char const *s1, char c1)
 {
-	int	co;
-	int	i;
+	size_t	i;
+	size_t	c;
 
 	i = 0;
-	co = 0;
-	while (s[i])
+	c = 0;
+	while (s1[i])
 	{
-		if (s[i] != c && ((s[i + 1] == c) || (s[i + 1] == '\0')))
-		{
-			co++;
-		}
+		if (s1[i] != c1 && s1[i + 1] == c1)
+			c++;
+		else if (s1[i] != c1 && s1[i + 1] == '\0')
+			c++;
 		i++;
 	}
-	return (co);
+	return (c);
 }
 
-int	word_len(const char *s, char c)
+int	c_l(char const *s1, char c1)
 {
 	int	i;
+	int	k;
 
 	i = 0;
-	while (s[i] && s[i] != c)
+	k = 0;
+	while (s1[i] == c1 && s1[i])
 		i++;
-	return (i);
+	while (s1[i] != c1 && s1[i])
+	{
+		k++;
+		i++;
+	}
+	return (k);
 }
 
-char	*word_all(const char *str, char c)
+char	*f_w(const char *s1, char c1)
 {
-	char	*s;
+	char	*st;
 	int		i;
-	int		len;
+	int		cl;
 
 	i = 0;
-	len = word_len(str, c);
-	s = malloc((sizeof(char)) * (len + 1));
-	if (!s)
+	cl = c_l(s1, c1);
+	st = malloc(sizeof(char) * (cl + 1));
+	if (!st)
 		return (NULL);
-	while (str[i] && str[i] != c && len > 0)
+	while (s1[i] && s1[i] != c1 && cl > 0)
 	{
-		s[i] = str[i];
+		st[i] = s1[i];
 		i++;
-		len--;
+		cl--;
 	}
-	s[i] = '\0';
-	return (s);
+	st[i] = '\0';
+	return (st);
 }
 
 char	**ft_split(char const *s, char c)
 {
-	char	**table;
+	char	**st;
 	int		i;
-	int		j;
+	int		k;
 
 	i = 0;
-	j = 0;
+	k = 0;
 	if (!s)
 		return (NULL);
-	table = malloc((sizeof(char *)) * (words_num(s, c) + 1));
-	if (!table)
+	st = malloc(sizeof(char *) * (c_w(s, c) + 1));
+	if (!st)
 		return (NULL);
 	while (s[i])
 	{
@@ -80,11 +87,11 @@ char	**ft_split(char const *s, char c)
 			i++;
 		if (s[i] && s[i] != c)
 		{
-			table[j] = word_all(&s[i], c);
-			i = i + word_len(&s[i], c);
-			j++;
+			st[k] = f_w(&s[i], c);
+			i = i + c_l(&s[i], c);
+			k++;
 		}
 	}
-	table[j] = NULL;
-	return (table);
+	st[k] = 0;
+	return (st);
 }

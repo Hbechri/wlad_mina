@@ -6,14 +6,11 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 18:34:52 by hbechri           #+#    #+#             */
-/*   Updated: 2023/08/18 18:34:53 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/06 18:54:05 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
-
-#include <stdio.h>
-#include <unistd.h>
+#include "../../minishell.h"
 
 typedef enum e_excode
 {

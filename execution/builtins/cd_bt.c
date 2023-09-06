@@ -10,13 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
-
-#include <unistd.h>
-#include "../env/env_header.h"
-#include "../../libft/libft.h"
-
-int g_exit = 0;
+#include "../../minishell.h"
 
 void	*home_path(t_env_lst **env)
 {
@@ -61,19 +55,19 @@ int	get_home_dir(t_env_lst *env)
 	if (!home)
 	{
 		ft_putstr_fd("HOME not sett\n", 2);
-		g_exit = 1;
-		return (g_exit);
+		g_exit_status = 1;
+		return (g_exit_status);
 	}
 	if (chdir(home) == 0)
-		g_exit = 0;
+		g_exit_status = 0;
 	//to hundle export home="sfsfsf" or unset home and export home="sfsfsf"
 	else
 	{
 		perror("haha"); //cd : no such file or directory
-		g_exit = 1;
-		return (g_exit);
+		g_exit_status = 1;
+		return (g_exit_status);
 	}
-	return (g_exit);
+	return (g_exit_status);
 }
 
 int	cd_bt(char **av, t_env_lst *env)
@@ -93,32 +87,15 @@ int	cd_bt(char **av, t_env_lst *env)
 	{
 		current_pwd = getcwd(buf, 0);
 		old_and_current_wd(env, old_pwd, current_pwd);
-		g_exit = 0;
-		return (g_exit);
+		g_exit_status = 0;
+		return (g_exit_status);
 	}
 	else
 	{
 		ft_putstr_fd("cd: ", 2);
 		ft_putstr_fd(av[1], 2);
 		perror(" ");
-		g_exit = 1;
+		g_exit_status = 1;
 	}
-	return (g_exit);
-}
-
-int main(int ac, char **av, char **env) {
-    t_env_lst *env = NULL; // Initialize your environment linked list
-
-    // Call your functions here as needed
-    // Example usage:
-    //char *av[] = {"ft_cd", "builtins/haha", NULL}; // Example av array
-    int result = cd_bt(av, env);
-    
-    if (result == 0) {
-        printf("cd successful\n");
-    } else {
-        printf("cd failed\n");
-    }
-
-    return 0;
+	return (g_exit_status);
 }
