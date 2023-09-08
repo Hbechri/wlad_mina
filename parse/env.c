@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amakhrou <amakhrou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:31:16 by amakhrou          #+#    #+#             */
-/*   Updated: 2023/09/06 16:46:34 by amakhrou         ###   ########.fr       */
+/*   Updated: 2023/09/08 16:34:56 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,24 +37,8 @@ t_env_lst	**env_dyalna(char **env)
 	return (env_lst);
 }
 
-void	env_bt(t_env_lst **env_lst)
-{
-	t_env_lst	*node;
-
-	node = *env_lst;
-	while (node)
-	{
-		ft_putstr_fd(node->key, 1);
-		ft_putstr_fd("=", 1);
-		ft_putstr_fd(node->value, 1);
-		ft_putstr_fd("\n", 1);
-		node = node->next;
-	}
-}
-
 t_env_lst	*our_getenv(char *key, t_env_lst **env_dyalna)
 {
-	t_command	*cmd;
 	t_env_lst	*current;
 
 	if (!key)

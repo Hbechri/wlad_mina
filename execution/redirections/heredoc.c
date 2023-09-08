@@ -6,7 +6,7 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 18:59:23 by hbechri           #+#    #+#             */
-/*   Updated: 2023/09/06 19:02:48 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/08 15:19:45 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	heredoc(t_command *cmd)
 		if (heredoc->type == HERDOC_ID)
 		{
 			heredoc_file = heredoc_file_name();
-			heredoc->heredoc_file = ft_strdup(heredoc_file);
+			heredoc->hdc_file = ft_strdup(heredoc_file);
 			free(heredoc_file);
 			heredoc->fd = open(heredoc->file, O_RDWR | O_CREAT | O_TRUNC, 0644);
 			delimiter_tmp1 = heredoc->file;

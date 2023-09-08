@@ -1,33 +1,16 @@
-#include <unistd.h>
-#include <fcntl.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirect_output.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/08 15:38:05 by hbechri           #+#    #+#             */
+/*   Updated: 2023/09/08 15:38:07 by hbechri          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-
-typedef	enum e_type
-{
-        WORD_ID,
-        PIPE_ID,
-        IN_ID,
-        OUT_ID,
-        APPEND_ID,
-        HERDOC_ID,
-} t_type;
-
-
-typedef struct s_redirection
-{
-    char *file;
-    int fd;
-	int	type;
-    struct s_redirection *next;
-} t_redirection;
-
-typedef struct s_command
-{
-	char			**cmd;
-    t_type             type;
-	t_redirection	*redirection;
-	struct s_command	*next;
-}				t_command;
+#include "../../minishell.h"
 
 void    redirect_output(t_command  *cmd)
 {

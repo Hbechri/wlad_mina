@@ -1,52 +1,40 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirections.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/08 15:39:29 by hbechri           #+#    #+#             */
+/*   Updated: 2023/09/08 15:49:49 by hbechri          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
+#include "../../minishell.h"
 
-typedef struct s_redirections
+void	redirections(t_command *cmd)
 {
-    char *file;
-    int fd;
-    struct s_redirections *next;
-} t_redirections;
+	t_redirection	*redirec;
 
-typedef struct s_cmd
-{
-	char **cmd;
-	t_redirections *r_in;
-	t_redirections *r_out;
-	t_redirections *r_append;
-	t_redirections *heredoc;
-	struct s_cmd *next;
-} t_cmd;
-
-void	redirections(t_cmd *cmd)
-{
-	t_redirections *r_in;
-	t_redirections *r_out;
-	t_redirections *r_append;
-	t_redirections *heredoc;
-
-	r_in = cmd->r_in;
-	r_out = cmd->r_out;
-	r_append = cmd->r_append;
-	heredoc = cmd->heredoc;
-
-	while (r_in)
+	redirec = cmd->redirection;
+	while (redirec->type == IN_ID)
 	{
-		redirect_input(cmd, r_in);
-		r_in = r_in->next;
+		redirect_input(cmd);
+		redirec = redirec->next;
 	}
-	while (r_out)
+	while (redirec->type == OUT_ID)
 	{
-		redirect_output(cmd, r_out);
-		r_out = r_out->next;
+		redirect_output(cmd);
+		redirec = redirec->next;
 	}
-	while (r_append)
+	while (redirec->type == APPEND_ID)
 	{
-		redirect_append(cmd, r_append);
-		r_append = r_append->next;
+		redirect_output_append(cmd);
+		redirec = redirec->next;
 	}
-	while (heredoc)
+	while (redirec->type == HERDOC_ID)
 	{
-		redirect_heredoc(cmd, heredoc);
-		heredoc = heredoc->next;
+		heredoc(cmd);
+		redirec = redirec->next;
 	}
 }

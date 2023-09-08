@@ -6,7 +6,7 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 17:08:29 by amakhrou          #+#    #+#             */
-/*   Updated: 2023/09/06 19:04:32 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/08 16:37:59 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,16 @@
 # include <unistd.h>
 # include <sys/types.h>
 # include <fcntl.h>
+# include <sys/wait.h>
 
-
-int	g_exit_status;
+// int	g_exit_status;
 
 typedef struct s_lexer
 {
 	char			*content;
 	int				size;
 	char			c;
-	unsigned int	i;
+	int				i;
 	int				error;
 }				t_lexer;
 
@@ -57,6 +57,7 @@ typedef struct s_redirection
 {
 	int						type;
 	char					*file;
+	char					*hdc_file;
 	int						fd;
 	struct s_redirection	*next;
 }						t_redirection;
@@ -84,6 +85,8 @@ void			ft_lstadd_back(t_env_lst **list, t_env_lst *new);
 void			ft_lstadd_back(t_env_lst **list, t_env_lst *new);
 t_env_lst		*ft_lstnew(char *keyword, char *value);
 int				ft_strcmp(char *s1, char *s2);
+int				ft_lstsize(t_env_lst *lst);
+char			*ft_strcpy(char *dst, const char *src);
 //parse
 t_env_lst		**env_dyalna(char **env);
 t_env_lst		*our_getenv(char *key, t_env_lst **env_dyalna);
@@ -122,9 +125,24 @@ char			*after_quotes(t_lexer *lexer, char *val,
 					t_env_lst **env_dyalna);
 char			*join_string(t_lexer *lexer, char c, t_env_lst **env_dyalna);
 t_token			*word_type_colect(t_lexer *lexer, t_env_lst **env_dyalna);
-t_token			*error_quotes(char *val);
+t_token			*error_quotes(char *val, t_lexer *lexer);
 t_token			*string_type_collect(t_lexer *lexer, char c,
 					t_env_lst **env_dyalna);
 int				array_len(char **array);
+
+//execution
+int				cd_bt(char **av, t_env_lst *env);
+int				echo(char **cmd);
+void			env_bt(t_env_lst **env_lst);
+int				exit_bt(char	**cmd);
+void			export_bt(char **cmd, t_env_lst *env);
+int				pwd(void);
+void			unset_bt(char **cmd, t_env_lst *env);
+void			exec_cmd(char **cmd, t_env_lst *env);
+void			heredoc(t_command *cmd);
+void			redirect_input(t_command  *cmd);
+void			redirect_output_append(t_command  *cmd);
+void			redirect_output(t_command  *cmd);
+void			redirections(t_command *cmd);
 
 #endif

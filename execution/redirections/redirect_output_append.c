@@ -1,44 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   redirect_output_append.c                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/08 15:38:32 by hbechri           #+#    #+#             */
+/*   Updated: 2023/09/08 15:39:12 by hbechri          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include <unistd.h>
-#include <fcntl.h>
+#include "../../minishell.h"
 
-
-enum {
-        WORD_ID,
-        PIPE_ID,
-        IN_ID,
-        OUT_ID,
-        SPACE_ID,
-        DOUBLE_Q_ID,
-        SINGLE_Q_ID,
-        APPEND_ID,
-        HERDOC_ID,
-        EXPAND_ID,
-};
-
-typedef struct s_redirections
+void    redirect_output_append(t_command  *cmd)
 {
-    char *file;
-    int fd;
-	int	type;
-    struct s_redirections *next;
-} t_redirections;
+    t_redirection  *append;
 
-typedef struct s_cmd
-{
-	char **cmd;
-	t_redirections *r_in;
-	t_redirections *r_out;
-	t_redirections *r_append;
-	t_redirections *heredoc;
-	struct s_cmd *next;
-} t_cmd;
-
-void    redirect_output_append(t_cmd  *cmd)
-{
-    t_redirections  *append;
-
-    append = cmd->r_append;
+    append = cmd->redirection;
     while (append)
     {
         if (append->type == APPEND_ID)
@@ -59,11 +37,6 @@ void    redirect_output_append(t_cmd  *cmd)
 // ls > "$USER" ==> must expand $USER to the user name
 // ls > '$USER' ==> must NOOOOOOT expand $USER to the user name
 
-
-
-#include <unistd.h>
-#include <fcntl.h>
-#include <stdlib.h>  // For malloc, free
 
 // int main() {
 //     // Example usage of the structures and functions

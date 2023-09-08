@@ -6,7 +6,7 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 17:17:14 by amakhrou          #+#    #+#             */
-/*   Updated: 2023/09/06 18:49:04 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/08 16:36:10 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	ac_check(int ac)
 {
-	//g_exit_status = 0;
+	// g_exit_status = 0;
 	if (ac != 1)
 	{
 		write(2, "minishell : ", 13);
@@ -31,8 +31,8 @@ int main(int ac, char **av, char **env)
     t_token *token;
 
 	(void)av;
-    cmd = NULL;
-    token = NULL;
+    (void)cmd;
+    (void)token;
     ac_check(ac);
     env_copy = env_dyalna(env);
     while(1)

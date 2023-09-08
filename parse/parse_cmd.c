@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amakhrou <amakhrou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:25:40 by amakhrou          #+#    #+#             */
-/*   Updated: 2023/09/06 16:46:54 by amakhrou         ###   ########.fr       */
+/*   Updated: 2023/09/08 15:54:07 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ t_command	*parse(char *line, t_env_lst **env_dyalna)
 	t_command	*cmd;
 	int			i;
 
+	cmd = NULL;
 	lexer = init_lexer(line);
 	token = malloc(sizeof(t_token *) * 2);
 	i = 0;
