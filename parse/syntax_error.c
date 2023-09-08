@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_error.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amakhrou <amakhrou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:30:21 by amakhrou          #+#    #+#             */
-/*   Updated: 2023/09/06 17:52:13 by amakhrou         ###   ########.fr       */
+/*   Updated: 2023/09/08 18:19:28 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,13 @@ int	check_syntax(t_token **token)
 
 	i = 0;
 	before = -1;
+	current = 0;
 	while (token[i])
 	{
 		current = token[i]->type;
 		if (before != WORD_ID && i != 0 && current != WORD_ID
 			&& before != PIPE_ID && current != PIPE_ID)
-			return (0);
+				return (0);
 		if (i == 0 && current == PIPE_ID)
 			return (0);
 		before = current;

@@ -1,28 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env_bt.c                                           :+:      :+:    :+:   */
+/*   utilis2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: amakhrou <amakhrou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/08/17 18:58:53 by hbechri           #+#    #+#             */
-/*   Updated: 2023/09/08 17:48:26 by hbechri          ###   ########.fr       */
+/*   Created: 2023/09/08 17:38:13 by amakhrou          #+#    #+#             */
+/*   Updated: 2023/09/08 17:40:12 by amakhrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../minishell.h"
+#include "../minishell.h"
 
-void	env_bt(t_env_lst *env_lst)
+int	array_len(char **array)
 {
-	t_env_lst *node;
+	int	i;
 
-	node = env_lst;
-	while(node)
+	i = 0;
+	if (array)
 	{
-		ft_putstr_fd(node->key, 1);
-		ft_putstr_fd("=", 1);
-		ft_putstr_fd(node->value, 1);
-		ft_putstr_fd("\n", 1);
-		node = node->next;
+		while (array[i])
+			i++;
 	}
+	return (i);
+}
+
+int	token_array_lenght(t_token **token)
+{
+	int	i;
+
+	i = 0;
+	if (token)
+	{
+		while (token[i] != NULL)
+			i++;
+	}
+	return (i);
 }

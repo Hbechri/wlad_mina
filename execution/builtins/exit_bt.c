@@ -6,13 +6,13 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 18:34:47 by hbechri           #+#    #+#             */
-/*   Updated: 2023/09/08 16:13:01 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/08 17:48:43 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	exit_bt(char	**cmd)
+int	exit_bt(char **cmd)
 {
 	int	i;
 	int j = 0;

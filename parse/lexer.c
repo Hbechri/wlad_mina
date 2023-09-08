@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: amakhrou <amakhrou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 17:51:46 by amakhrou          #+#    #+#             */
-/*   Updated: 2023/09/08 15:55:47 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/06 16:46:47 by amakhrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ t_lexer	*init_lexer(char *content)
 	lexer->size = ft_strlen(content);
 	lexer->i = 0;
 	lexer->c = content[lexer->i];
-	lexer->error = 0;
 	return (lexer);
 }
 

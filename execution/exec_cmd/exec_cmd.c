@@ -6,11 +6,13 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 18:56:03 by hbechri           #+#    #+#             */
-/*   Updated: 2023/09/06 18:56:05 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/08 17:41:13 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+
+
 
 void	exec_cmd(char **cmd, t_env_lst *env)
 {
@@ -40,7 +42,6 @@ void	exec_cmd(char **cmd, t_env_lst *env)
 			if (ft_strnstr(envp[i], "PATH", 4))
 			{
 				path = ft_substr(envp[i], 5, ft_strlen(envp[i]));
-				//printf("%s\n", path);
 				break ;
 			}
 			i++;
@@ -53,7 +54,6 @@ void	exec_cmd(char **cmd, t_env_lst *env)
 			{
 				tmp_path = ft_strjoin(splitted_paths[i], "/");
 				tmp_path = ft_strjoin(tmp_path, cmd[0]);
-				//printf("%s\n", tmp_path);
 				if (access(tmp_path, F_OK) == 0)
 				{
 					execve(tmp_path, cmd, envp);

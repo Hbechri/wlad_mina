@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: amakhrou <amakhrou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:25:40 by amakhrou          #+#    #+#             */
-/*   Updated: 2023/09/08 15:54:07 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/08 17:47:19 by amakhrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,6 @@ t_command	*parse(char *line, t_env_lst **env_dyalna)
 {
 	t_lexer		*lexer;
 	t_token		**token;
-	t_token		*next_token;
 	t_command	*cmd;
 	int			i;
 
@@ -106,10 +105,7 @@ t_command	*parse(char *line, t_env_lst **env_dyalna)
 	token[0] = lexer_next_token(lexer, env_dyalna);
 	token[1] = NULL;
 	while (token[i++])
-	{
-		next_token = lexer_next_token(lexer, env_dyalna);
-		token = new_token(token, next_token);
-	}
+		token = new_token(token, lexer_next_token(lexer, env_dyalna));
 	if (!check_syntax(token))
 		error_msg(1);
 	else if (lexer->error == 1)

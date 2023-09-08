@@ -74,7 +74,7 @@ int	get_home_dir(t_env_lst *env)
 	return (1);
 }
 
-int	cd_bt(char **av, t_env_lst *env)
+int	cd_bt(char **cmd, t_env_lst *env)
 {
 	char	*old_pwd;
 	char	*current_pwd;
@@ -83,9 +83,9 @@ int	cd_bt(char **av, t_env_lst *env)
 	buf = NULL;
 	old_pwd = getcwd(buf, 0);
 	free(buf);
-	if (av[1] == NULL || av[1][0] == '\0')
+	if (cmd[1] == NULL || cmd[1][0] == '\0')
 		get_home_dir(env);
-	else if (chdir(av[1]) == 0)
+	else if (chdir(cmd[1]) == 0)
 	{
 		current_pwd = getcwd(buf, 0);
 		old_and_current_wd(env, old_pwd, current_pwd);
@@ -96,7 +96,7 @@ int	cd_bt(char **av, t_env_lst *env)
 	else
 	{
 		ft_putstr_fd("cd: ", 2);
-		ft_putstr_fd(av[1], 2);
+		ft_putstr_fd(cmd[1], 2);
 		perror(" ");
 		// g_exit_status = 1;
 	}

@@ -6,7 +6,7 @@
 /*   By: amakhrou <amakhrou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 18:23:09 by amakhrou          #+#    #+#             */
-/*   Updated: 2023/09/06 16:47:09 by amakhrou         ###   ########.fr       */
+/*   Updated: 2023/09/08 17:40:03 by amakhrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,19 +36,6 @@ t_token	*token_returns(t_lexer *lexer, t_token *token)
 {
 	lexer_advance(lexer);
 	return (token);
-}
-
-int	token_array_lenght(t_token **token)
-{
-	int	i;
-
-	i = 0;
-	if (token)
-	{
-		while (token[i] != NULL)
-			i++;
-	}
-	return (i);
 }
 
 t_token	**new_token(t_token **curr, t_token *token)

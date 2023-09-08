@@ -6,7 +6,7 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 17:08:29 by amakhrou          #+#    #+#             */
-/*   Updated: 2023/09/08 16:37:59 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/08 18:08:50 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ char			*ft_strcpy(char *dst, const char *src);
 //parse
 t_env_lst		**env_dyalna(char **env);
 t_env_lst		*our_getenv(char *key, t_env_lst **env_dyalna);
-void			env_bt(t_env_lst **env_lst);
 char			*my_getenv(char *key, t_env_lst **env_dyalna);
 char			*expand_exit(t_lexer *lexer);
 char			*expandcheck(t_lexer *lexer, char *s, t_env_lst **env_dyalna);
@@ -125,7 +124,7 @@ char			*after_quotes(t_lexer *lexer, char *val,
 					t_env_lst **env_dyalna);
 char			*join_string(t_lexer *lexer, char c, t_env_lst **env_dyalna);
 t_token			*word_type_colect(t_lexer *lexer, t_env_lst **env_dyalna);
-t_token			*error_quotes(char *val, t_lexer *lexer);
+t_token			*error_quotes(char *val);
 t_token			*string_type_collect(t_lexer *lexer, char c,
 					t_env_lst **env_dyalna);
 int				array_len(char **array);
@@ -133,11 +132,14 @@ int				array_len(char **array);
 //execution
 int				cd_bt(char **av, t_env_lst *env);
 int				echo(char **cmd);
-void			env_bt(t_env_lst **env_lst);
+void			env_bt(t_env_lst *env_lst);
 int				exit_bt(char	**cmd);
 void			export_bt(char **cmd, t_env_lst *env);
 int				pwd(void);
 void			unset_bt(char **cmd, t_env_lst *env);
+int				bt_checker(t_command *cmd);
+void			exec_bt(t_command *cmd, t_env_lst *env);
+
 void			exec_cmd(char **cmd, t_env_lst *env);
 void			heredoc(t_command *cmd);
 void			redirect_input(t_command  *cmd);
