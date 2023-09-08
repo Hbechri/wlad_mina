@@ -6,7 +6,7 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 18:34:52 by hbechri           #+#    #+#             */
-/*   Updated: 2023/09/06 18:54:05 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/08 23:07:28 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ typedef enum e_excode
 	EX_OUTOF_RANGE = 255
 }	t_excode;
 
-int	pwd(void)
+int	pwd_bt(void)
 {
 	char	*pwd;
 

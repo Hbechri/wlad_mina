@@ -6,7 +6,7 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 18:23:13 by hbechri           #+#    #+#             */
-/*   Updated: 2023/09/08 18:58:05 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/08 23:01:28 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ int wld_mina(int *fd, int in_fd, t_command *cmd, t_env_lst *env)
             exit (0);
         }
         else
-            exec_cmd(cmd, env);
+            exec_cmd(cmd->cmd, env);
     }
     return (0);
 }
@@ -49,19 +49,52 @@ void	mina(void)
 	while(waitpid(-1, &wait, 0) > 0)
 	{
 		if (WIFEXITED(wait))
-			g_exit_status = WEXITSTATUS(wait);
+		{
+			// g_exit_status = WEXITSTATUS(wait);
+			WEXITSTATUS(wait);
+		}
 	}
 }
 
-int	lonely_cmd(int *fd, int in_fd, t_command *cmd, t_env_lst *env)
+void	lonely_cmd(int *fd, int in_fd, t_command *cmd, t_env_lst *env)
 {
 	pid_t pid;
 
 	pid = fork();
-	if (pid = 0 && !cmd->cmd && )
+	if ((pid = 0) && cmd->cmd && !cmd->redirection)
+	{
+		if(bt_checker(cmd))
+		{
+			exec_bt(cmd, env);
+			// g_exit_status = 0;
+			return ;
+		}
+	}
+	if (pid == 0)
+	{
+		signal(SIGQUIT, SIG_DFL);
+		if (in_fd != 0)
+		{
+			dup2(in_fd, 0);
+			close(in_fd);
+		}
+		if (fd[1] > 2)
+			close(fd[1]);
+		redirections(cmd);
+		if (cmd->cmd && bt_checker(cmd))
+		{
+			exec_bt(cmd, env);
+			exit(0);
+		}
+		else if (cmd->cmd)
+			exec_cmd(cmd->cmd, env);
+	}
+	if (in_fd != 0)
+		close(in_fd);
+	return ;
 }
 
-void	execution(t_command *cmd, t_env_lst *env)
+void	execution(t_command *cmd, t_env_lst **env)
 {
 	int	fd[2];
 	int	in_fd;
@@ -72,15 +105,16 @@ void	execution(t_command *cmd, t_env_lst *env)
 		while(cmd)
 		{
 			pipe(fd);
-			wld_mina(fd[1], in_fd, cmd, env);
+			wld_mina(fd, in_fd, cmd, *env);
 			close(fd[1]);
 			if (in_fd != 0)
 				close(in_fd);
 			if (fd[1] > 2)
-				close(fd[1])
+				close(fd[1]);
 			in_fd = fd[0];
 			cmd = cmd->next;
 		}
+		lonely_cmd(fd, in_fd, cmd, *env);
 		mina();
 	}
 }

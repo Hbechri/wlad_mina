@@ -6,7 +6,7 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 18:34:33 by hbechri           #+#    #+#             */
-/*   Updated: 2023/09/06 18:51:11 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/08 23:07:09 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	option_checker(char *cmd, char option)
 	return (EX_BT_FAIL);
 }
 
-int echo(char **cmd)
+int echo_bt(char **cmd)
 {
 	int		i;
 	int		nl_flag;

@@ -6,13 +6,11 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 18:56:03 by hbechri           #+#    #+#             */
-/*   Updated: 2023/09/08 17:41:13 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/08 23:06:09 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
-
-
 
 void	exec_cmd(char **cmd, t_env_lst *env)
 {

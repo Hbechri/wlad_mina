@@ -6,7 +6,7 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 17:08:29 by amakhrou          #+#    #+#             */
-/*   Updated: 2023/09/08 18:08:50 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/08 23:08:48 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,11 @@
 # include <readline/history.h>
 # include <unistd.h>
 # include <sys/types.h>
+# include <sys/stat.h>
 # include <fcntl.h>
 # include <sys/wait.h>
+# include <signal.h>
+
 
 // int	g_exit_status;
 
@@ -131,15 +134,18 @@ int				array_len(char **array);
 
 //execution
 int				cd_bt(char **av, t_env_lst *env);
-int				echo(char **cmd);
+int				echo_bt(char **cmd);
 void			env_bt(t_env_lst *env_lst);
 int				exit_bt(char	**cmd);
 void			export_bt(char **cmd, t_env_lst *env);
-int				pwd(void);
+int				pwd_bt(void);
 void			unset_bt(char **cmd, t_env_lst *env);
 int				bt_checker(t_command *cmd);
 void			exec_bt(t_command *cmd, t_env_lst *env);
-
+void			lonely_cmd(int *fd, int in_fd, t_command *cmd, t_env_lst *env);
+void			mina(void);
+int 			wld_mina(int *fd, int in_fd, t_command *cmd, t_env_lst *env);
+void			execution(t_command *cmd, t_env_lst **env);
 void			exec_cmd(char **cmd, t_env_lst *env);
 void			heredoc(t_command *cmd);
 void			redirect_input(t_command  *cmd);
