@@ -12,9 +12,24 @@
 
 #include "minishell.h"
 
+
+void	sig_int_handler()
+{
+	write(1, "\n", 1);
+	// rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
+}
+
+void	set_signals(void)
+{
+	signal(SIGQUIT, SIG_IGN);
+	signal(SIGINT, sig_int_handler);
+}
+
 void	ac_check(int ac)
 {
-	// g_exit_status = 0;
+	g_exit_status = 0;
 	if (ac != 1)
 	{
 		write(2, "minishell : ", 13);
@@ -35,6 +50,7 @@ int main(int ac, char **av, char **env)
     (void)token;
     ac_check(ac);
     env_copy = env_dyalna(env);
+    set_signals();
     while(1)
     {
         input = readline("minishell : ");
@@ -45,6 +61,7 @@ int main(int ac, char **av, char **env)
         }
         add_history(input);
         cmd = parse(input, env_copy);
+        heredoc(cmd);
 		execution(cmd, env_copy);
     }
 }

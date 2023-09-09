@@ -83,7 +83,7 @@ t_token	*error_quotes(char *val)
 	lexer = NULL;
 	lexer->error = 1;
 	free(val);
-	// g_exit_status = 1;
+	g_exit_status = 1;
 	return (NULL);
 }
 

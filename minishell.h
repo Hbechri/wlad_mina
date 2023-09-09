@@ -29,7 +29,7 @@
 # include <signal.h>
 
 
-// int	g_exit_status;
+int	g_exit_status;
 
 typedef struct s_lexer
 {

@@ -36,6 +36,6 @@ char	*ft_strjoin(char *s1, char *s2)
 		p[i++] = s2[y++];
 	}
 	p[i] = '\0';
-	free(s1);
+	// free(s1);
 	return (p);
 }

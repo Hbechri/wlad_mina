@@ -16,6 +16,7 @@ int wld_mina(int *fd, int in_fd, t_command *cmd, t_env_lst *env)
 {
     pid_t pid;
 
+	printf("wldmina\n");
     pid = fork();
     if (pid == 0)
     {
@@ -50,7 +51,7 @@ void	mina(void)
 	{
 		if (WIFEXITED(wait))
 		{
-			// g_exit_status = WEXITSTATUS(wait);
+			g_exit_status = WEXITSTATUS(wait);
 			WEXITSTATUS(wait);
 		}
 	}
@@ -60,16 +61,16 @@ void	lonely_cmd(int *fd, int in_fd, t_command *cmd, t_env_lst *env)
 {
 	pid_t pid;
 
-	pid = fork();
-	if ((pid = 0) && cmd->cmd && !cmd->redirection)
+	if (in_fd == 0 && cmd->cmd && !cmd->redirection)
 	{
 		if(bt_checker(cmd))
 		{
 			exec_bt(cmd, env);
-			// g_exit_status = 0;
+			g_exit_status = 0;
 			return ;
 		}
 	}
+	pid = fork();
 	if (pid == 0)
 	{
 		signal(SIGQUIT, SIG_DFL);
@@ -86,8 +87,11 @@ void	lonely_cmd(int *fd, int in_fd, t_command *cmd, t_env_lst *env)
 			exec_bt(cmd, env);
 			exit(0);
 		}
-		else if (cmd->cmd)
+		else
+		{
 			exec_cmd(cmd->cmd, env);
+			exit(0);
+		}
 	}
 	if (in_fd != 0)
 		close(in_fd);
@@ -102,7 +106,7 @@ void	execution(t_command *cmd, t_env_lst **env)
 	if(cmd)
 	{
 		in_fd = 0;
-		while(cmd)
+		while(cmd->next)
 		{
 			pipe(fd);
 			wld_mina(fd, in_fd, cmd, *env);

@@ -15,8 +15,8 @@
 char	*expand_exit(t_lexer *lexer)
 {
 	lexer_advance(lexer);
-	// return (ft_itoa(g_exit_status));
-	return NULL;
+	return (ft_itoa(g_exit_status));
+	// return NULL;
 }
 
 char	*expandcheck(t_lexer *lexer, char *s, t_env_lst **env_dyalna)

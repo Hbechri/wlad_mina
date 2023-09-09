@@ -43,6 +43,6 @@ int	error_msg(int flag)
 		ft_putstr_fd("syntax error near unexpected token\n", 2);
 	if (flag == 2)
 		ft_putstr_fd("syntax error open quotes\n", 2);
-	// g_exit_status = 258;
+	g_exit_status = 258;
 	return (0);
 }

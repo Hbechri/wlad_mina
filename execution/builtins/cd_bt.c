@@ -55,23 +55,23 @@ int	get_home_dir(t_env_lst *env)
 	if (!home)
 	{
 		ft_putstr_fd("HOME not sett\n", 2);
-		// g_exit_status = 1;
-		// return (g_exit_status);
-		return (1);
+		g_exit_status = 1;
+		return (g_exit_status);
+		// return (1);
 	}
 	if (chdir(home) == 0)
-		// g_exit_status = 0;
-		return (0);
+		g_exit_status = 0;
+		// return (0);
 	//to hundle export home="sfsfsf" or unset home and export home="sfsfsf"
 	else
 	{
 		perror("haha"); //cd : no such file or directory
-		// g_exit_status = 1;
-		// return (g_exit_status);
-		return (1);
+		g_exit_status = 1;
+		return (g_exit_status);
+		// return (1);
 	}
-	// return (g_exit_status);
-	return (1);
+	return (g_exit_status);
+	// return (1);
 }
 
 int	cd_bt(char **cmd, t_env_lst *env)
@@ -89,17 +89,17 @@ int	cd_bt(char **cmd, t_env_lst *env)
 	{
 		current_pwd = getcwd(buf, 0);
 		old_and_current_wd(env, old_pwd, current_pwd);
-		// g_exit_status = 0;
-		// return (g_exit_status);
-		return (0);
+		g_exit_status = 0;
+		return (g_exit_status);
+		// return (0);
 	}
 	else
 	{
 		ft_putstr_fd("cd: ", 2);
 		ft_putstr_fd(cmd[1], 2);
 		perror(" ");
-		// g_exit_status = 1;
+		g_exit_status = 1;
 	}
-	// return (g_exit_status);
-	return (1);
+	return (g_exit_status);
+	// return (1);
 }
