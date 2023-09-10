@@ -46,11 +46,9 @@ char	*heredoc_file_name(void)
 
 	fd = open("/dev/random", O_RDONLY);
 	read(fd, &random, sizeof(rand));
-	// printf("random 9bl l9issma = %d\n", random);
 	if (random < 0)
 		random *= -1;
 	// random = random / 1000000;
-	// printf("random mora l9issma = %d\n", random);
 	random_str = ft_itoa(random);
 	tmp = ft_strjoin("/tmp/", random_str);
 	file_name = ft_strdup(tmp);
@@ -73,7 +71,6 @@ char	*ignore_spaces(char *str)
 
 void	heredoc(t_command *cmd)
 {
-	printf("heredoc\n");
 	t_redirection *heredoc;
 	char *line;
 	char *delimiter;
@@ -87,13 +84,11 @@ void	heredoc(t_command *cmd)
 	{
 		if (heredoc->type == HERDOC_ID)
 		{
-			printf("pid\n");
 			heredoc_file = heredoc_file_name();
 			heredoc->hdc_file = ft_strdup(heredoc_file);
 			// free(heredoc_file);
-			heredoc->fd = open(heredoc->file, O_RDWR | O_CREAT | O_TRUNC, 0644);
+			heredoc->fd = open(heredoc->hdc_file, O_RDWR | O_CREAT | O_TRUNC, 0644);
 			delimiter_tmp1 = heredoc->file;
-			// printf("pid = %d\n", pid);
 			pid = fork();
 			if (pid == -1)
 			{

@@ -61,7 +61,6 @@ int main(int ac, char **av, char **env)
         }
         add_history(input);
         cmd = parse(input, env_copy);
-        heredoc(cmd);
 		execution(cmd, env_copy);
     }
 }

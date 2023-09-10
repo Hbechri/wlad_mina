@@ -102,12 +102,9 @@ void	exec_cmd(char **cmd, t_env_lst *env)
 	path = NULL;
 	envp = env_table(env);
 	if (cmd == NULL)
-	{
-		printf ("1-->%s\n", cmd[0]);
 		return ;
-	}
 	else
-	{	
+	{
 
 		path = path_from_env(envp);
 
