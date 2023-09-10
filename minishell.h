@@ -6,7 +6,7 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 17:08:29 by amakhrou          #+#    #+#             */
-/*   Updated: 2023/09/08 23:08:48 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/10 18:21:48 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,7 @@
 # include <sys/wait.h>
 # include <signal.h>
 
-
-int	g_exit_status;
+extern int	g_exit_status;
 
 typedef struct s_lexer
 {
@@ -127,7 +126,7 @@ char			*after_quotes(t_lexer *lexer, char *val,
 					t_env_lst **env_dyalna);
 char			*join_string(t_lexer *lexer, char c, t_env_lst **env_dyalna);
 t_token			*word_type_colect(t_lexer *lexer, t_env_lst **env_dyalna);
-t_token			*error_quotes(char *val);
+t_token			*error_quotes(char *val, t_lexer *lexer);
 t_token			*string_type_collect(t_lexer *lexer, char c,
 					t_env_lst **env_dyalna);
 int				array_len(char **array);

@@ -6,7 +6,7 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 18:59:23 by hbechri           #+#    #+#             */
-/*   Updated: 2023/09/08 15:19:45 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/10 18:57:13 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ char	*heredoc_file_name(void)
 	tmp = ft_strjoin("/tmp/", random_str);
 	file_name = ft_strdup(tmp);
 	close(fd);
+	free (random_str);
+	free (tmp);
 	return(file_name);
 }
 

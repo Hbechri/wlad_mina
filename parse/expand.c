@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amakhrou <amakhrou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 14:24:24 by amakhrou          #+#    #+#             */
-/*   Updated: 2023/09/06 17:52:31 by amakhrou         ###   ########.fr       */
+/*   Updated: 2023/09/10 18:19:35 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char	*expand_inside_word(t_lexer *lexer, t_env_lst **env_dyalna)
 	val = ft_strdup("");
 	while (!if_operator(lexer->c) && !is_space(lexer->c)
 		&& lexer->c != '\0' && lexer->c != '$' && lexer->c
-		!= '\'' && lexer->c != '\"')
+		!= '\'' && lexer->c != '\"' && lexer->c != '=')
 	{
 		s = tokenz_value(lexer);
 		val = ft_strjoin(val, s);

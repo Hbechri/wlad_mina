@@ -6,7 +6,7 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 18:34:47 by hbechri           #+#    #+#             */
-/*   Updated: 2023/09/08 17:48:43 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/10 15:17:36 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,8 @@ int	exit_arg_flag(char **cmd)
 int	exit_bt(char **cmd)
 {
 	int	i;
-	int num;
 
 	i = 0;
-	num = 0;
 	while (cmd[i])
 		i++;
 	if (i == 1)

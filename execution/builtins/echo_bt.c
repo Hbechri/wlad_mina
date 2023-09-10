@@ -6,7 +6,7 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 18:34:33 by hbechri           #+#    #+#             */
-/*   Updated: 2023/09/08 23:07:09 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/10 18:13:26 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,14 @@ int	option_checker(char *cmd, char option)
 
 	i = 2;
 	if (cmd[0] != '-' || ft_strlen(cmd) < 2)
-		return (EX_SUCCESS);
+		return (0);
 	while (cmd[i])
 	{
 		if (cmd[i] != option)
-			return (EX_SUCCESS);
+			return (0);
 		i++;
 	}
-	return (EX_BT_FAIL);
+	return (2);
 }
 
 int echo_bt(char **cmd)
@@ -61,5 +61,5 @@ int echo_bt(char **cmd)
 	}
 	if (nl_flag == 1)
 		printf("\n");
-	return (EX_SUCCESS);
+	return (0);
 }

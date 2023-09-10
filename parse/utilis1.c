@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utilis1.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amakhrou <amakhrou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 14:18:23 by amakhrou          #+#    #+#             */
-/*   Updated: 2023/09/08 17:38:36 by amakhrou         ###   ########.fr       */
+/*   Updated: 2023/09/10 18:22:16 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,8 @@ t_token	*word_type_colect(t_lexer *lexer, t_env_lst **env_dyalna)
 	return (init_tokens(val, WORD_ID));
 }
 
-t_token	*error_quotes(char *val)
+t_token	*error_quotes(char *val, t_lexer *lexer)
 {
-	t_lexer		*lexer;
-
-	lexer = NULL;
 	lexer->error = 1;
 	free(val);
 	g_exit_status = 1;
@@ -107,7 +104,7 @@ t_token	*string_type_collect(t_lexer *lexer, char c, t_env_lst **env_dyalna)
 		lexer_advance(lexer);
 	}
 	if (lexer->c != c)
-		return (error_quotes(val));
+		return (error_quotes(val, lexer));
 	lexer_advance(lexer);
 	if (!if_operator(lexer->c) && !is_space(lexer->c) && lexer->c != '\0')
 		val = after_quotes(lexer, val, env_dyalna);

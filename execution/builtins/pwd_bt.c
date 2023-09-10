@@ -6,7 +6,7 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 18:34:52 by hbechri           #+#    #+#             */
-/*   Updated: 2023/09/08 23:07:28 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/10 18:12:58 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,5 @@ int	pwd_bt(void)
 	pwd = getcwd(0, 0);
 	printf("%s\n", pwd);
 	free (pwd);
-	return (EX_SUCCESS);
+	return (0);
 }
