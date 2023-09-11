@@ -6,7 +6,7 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 18:59:23 by hbechri           #+#    #+#             */
-/*   Updated: 2023/09/10 18:57:13 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/11 16:33:52 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,49 +71,73 @@ char	*ignore_spaces(char *str)
 	return (without_spaces);
 }
 
+void	heredoc_boucle(t_redirection *heredoc, char *delimiter)
+{
+	char *line;
+
+	while (1)
+	{
+		line = readline("> ");
+		if (!line)
+			break ;
+		if (ft_strcmp(line, delimiter) == 0)
+			break ;
+		if (line)
+			write(heredoc->fd, line, ft_strlen(line));
+		write(heredoc->fd, "\n", 1);
+		free(line);
+	}
+	free(delimiter);
+}
+
+char	*set_delimiter(t_redirection *heredoc)
+{
+	char *delimiter;
+	char *delimiter_tmp1;
+	char *delimiter_tmp2;
+
+	delimiter_tmp1 = heredoc->file;
+	delimiter_tmp2 = ignore_spaces(delimiter_tmp1);
+	delimiter = remove_quotes(delimiter_tmp2);
+	return (delimiter);
+}
+
+void	pid_error(void)
+{
+	perror("fork");
+	exit(1);
+}
+
+void	set_heredoc_fd(t_redirection *heredoc)
+{
+	char *heredoc_file;
+
+	heredoc_file = heredoc_file_name();
+	heredoc->hdc_file = ft_strdup(heredoc_file);
+	free(heredoc_file);
+	heredoc->fd = open(heredoc->hdc_file, O_RDWR | O_CREAT | O_TRUNC, 0644);
+}
+
 void	heredoc(t_command *cmd)
 {
 	t_redirection *heredoc;
-	char *line;
 	char *delimiter;
-	char *heredoc_file;
 	pid_t pid;
-	char *delimiter_tmp1;
-	char *delimiter_tmp2;
 
 	heredoc = cmd->redirection;
 	while (heredoc)
 	{
 		if (heredoc->type == HERDOC_ID)
 		{
-			heredoc_file = heredoc_file_name();
-			heredoc->hdc_file = ft_strdup(heredoc_file);
-			// free(heredoc_file);
-			heredoc->fd = open(heredoc->hdc_file, O_RDWR | O_CREAT | O_TRUNC, 0644);
-			delimiter_tmp1 = heredoc->file;
+			set_heredoc_fd(heredoc);
 			pid = fork();
 			if (pid == -1)
+				pid_error();
+			else if (pid == 0)
 			{
-				perror("fork");
-				exit(1);
-			}
-			if (pid == 0)
-			{
-				delimiter_tmp2 = ignore_spaces(delimiter_tmp1);
-				delimiter = remove_quotes(delimiter_tmp2);
-				while (1)
-				{
-					line = readline("> ");
-					if (!line)
-						break ;
-					if (ft_strcmp(line, delimiter) == 0)
-						break ;
-					if (line)
-						write(heredoc->fd, line, ft_strlen(line));
-					write(heredoc->fd, "\n", 1);
-					free(line);
-				}
-				free(delimiter);
+				signal(SIG_IGN, SIG_DFL);
+				delimiter = set_delimiter(heredoc);
+				heredoc_boucle(heredoc, delimiter);
 				close(heredoc->fd);
 			}
 			else

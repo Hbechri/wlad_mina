@@ -6,7 +6,7 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 15:39:29 by hbechri           #+#    #+#             */
-/*   Updated: 2023/09/08 17:37:45 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/11 15:39:47 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ void	redirections(t_command *cmd)
 			redirect_output(cmd);
 		else if (redirec->type == APPEND_ID)
 			redirect_output_append(cmd);
-		else if (redirec->type == HERDOC_ID)
-			heredoc(cmd);
+		// else if (redirec->type == HERDOC_ID)
+		// 	heredoc(cmd);
 		redirec = redirec->next;
 	}
 }
