@@ -6,7 +6,7 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 17:17:14 by amakhrou          #+#    #+#             */
-/*   Updated: 2023/09/12 15:38:42 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/12 18:55:19 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ int main(int ac, char **av, char **env)
         if (ft_isprint(input[0]))
             add_history(input);
         cmd = parse(input, env_copy);
+        heredoc(cmd, *env_copy);
 		execution(cmd, env_copy);
     }
 }

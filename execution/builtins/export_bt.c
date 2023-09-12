@@ -6,7 +6,7 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 21:35:24 by hbechri           #+#    #+#             */
-/*   Updated: 2023/09/10 18:55:19 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/12 23:51:08 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ char *value(char *cmd)
 	return (value);
 }
 
+
+
 int	key_checker(t_env_lst *env, char *key, char *val)
 {
 	t_env_lst *tmp;
@@ -64,12 +66,14 @@ int	key_checker(t_env_lst *env, char *key, char *val)
 	tmp = env;
 	while(tmp)
 	{
-		if (ft_strcmp(key, tmp->key) == 0)
+		if (ft_strcmp(key, tmp->key) == 0 && val[0] != '\0' && val[0] != '\r')
 		{
 			free(tmp->value);
 			tmp->value = ft_strdup(val);
 			return (1);
 		}
+		else if (ft_strcmp(key, tmp->key) == 0 && (val[0] == '\0' || val[0] == '\r'))
+			return (1);
 		tmp = tmp->next;
 	}
 	return (0);

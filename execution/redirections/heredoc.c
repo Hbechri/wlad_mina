@@ -6,11 +6,107 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 18:59:23 by hbechri           #+#    #+#             */
-/*   Updated: 2023/09/12 15:51:44 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/12 23:03:14 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
+
+int	is_quotes(char *str)
+{
+	int i;
+
+	i = 0;
+	while(str[i])
+	{
+		if (str[i] == '\'' || str[i] == '\"')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+int	is_alpha_and_underscore(char *str)
+{
+	int i;
+
+	i = 0;
+	while(str[i])
+	{
+		if (ft_isalpha(str[i]) == 1)
+			return (1);
+		else if (str[i] == '_')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+char	*dollar_word(char *str)
+{
+	char *word;
+	int i;
+	int j;
+
+	i = 0;
+	j = 0;
+	word = NULL;
+	while(str[i] && str[i] != ' ' && str[i] != '\t' && str[i] != '\0'
+		&& is_alpha_and_underscore(str + i) == 1)
+		i++;
+	word = ft_calloc(sizeof(char), (i + 1));
+	while (j < i)
+	{
+		word[j] = str[j];
+		j++;
+	}
+	word[i] = '\0';
+	return (word);
+}
+
+char	*replace_with_value(char *line, char *word, t_env_lst **env)
+{
+	char *value;
+	char *tmp;
+	char *tmp1;
+	int i;
+
+	i = 0;
+	value = my_getenv(word, env);
+	while (line[i] != '$')
+		i++;
+	tmp = ft_substr(line, 0, i);
+	tmp1 = ft_strjoin(tmp, value);
+	free(tmp);
+	tmp = ft_strjoin(tmp1, line + i + ft_strlen(word));
+	free(tmp1);
+	return (tmp);
+}
+
+char	*expand_in_hdc(char *exp, t_env_lst **env)
+{
+	char *expd;
+	char *word;
+	char *tmp;
+	int i;
+
+	i = 0;
+	expd = exp;
+	while(expd[i])
+	{
+		if(expd[i] == '$')
+		{
+			word = dollar_word(expd + i + 1);
+			tmp = replace_with_value(expd, word, env);
+			free(expd);
+			expd = ft_strdup(tmp);
+			free(tmp);
+			free(word);
+		}
+		i++;
+	}
+	return (expd);
+}
 
 char	*remove_quotes(char *str)
 {
@@ -71,10 +167,11 @@ char	*ignore_spaces(char *str)
 	return (without_spaces);
 }
 
-void	heredoc_boucle(char *delimiter, int fd)
+void	heredoc_boucle(char *delimiter, int fd, t_env_lst **env, int expand)
 {
 	char *line;
-
+	char *tmp;
+	
 	while (1)
 	{
 		line = readline("> ");
@@ -83,9 +180,18 @@ void	heredoc_boucle(char *delimiter, int fd)
 		if (ft_strcmp(line, delimiter) == 0)
 			break ;
 		if (line)
-			write(fd, line, ft_strlen(line));
+		{
+			if (expand == 0)
+			{
+				tmp = expand_in_hdc(line, env);
+				write(fd, tmp, ft_strlen(tmp));
+				free(tmp);
+			}
+			else if (expand == 1)
+				write(fd, line, ft_strlen(line));
+		}
 		write(fd, "\n", 1);
-		free(line);
+		// free(line);
 	}
 	close(fd);
 	free(delimiter);
@@ -146,8 +252,8 @@ void	heredoc(t_command *cmd, t_env_lst *env)
 	char *delimiter;
 	int fd;
 	pid_t pid;
+	int expand;
 
-	(void)env;
 	while (cmd)
 	{
 		heredoc = cmd->redirection;
@@ -163,8 +269,11 @@ void	heredoc(t_command *cmd, t_env_lst *env)
 				{
 					signal(SIGINT, SIG_DFL);
 					signal(SIGINT, SIG_IGN);
+					expand = is_quotes(heredoc->file);
+					printf("delimiter = %s\n", heredoc->file);
+					printf("expand = %d\n", expand);
 					delimiter = set_delimiter(heredoc);
-					heredoc_boucle(delimiter, fd);
+					heredoc_boucle(delimiter, fd, &env, expand);
 					exit(0);
 				}
 				wait_signal(pid, fd);

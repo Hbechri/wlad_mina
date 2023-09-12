@@ -6,7 +6,7 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 18:23:13 by hbechri           #+#    #+#             */
-/*   Updated: 2023/09/12 15:38:02 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/12 18:47:18 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,15 @@ int wld_mina(int *fd, int in_fd, t_command *cmd, t_env_lst *env)
 {
     pid_t pid;
 
-	printf("wldmina\n");
     pid = fork();
     if (pid == 0)
     {
-		printf("wldmina\n");
         if (in_fd != -1)
         {
-            dup2(in_fd, 0);
+            dup2(in_fd, STDIN_FILENO);
             close(in_fd);
         }
-        dup2(fd[1], 1);
+        dup2(fd[1], STDOUT_FILENO);
         close(fd[1]);
         if (fd[0] > 2)
             close(fd[0]);
