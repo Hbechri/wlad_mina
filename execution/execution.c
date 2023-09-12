@@ -6,7 +6,7 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 18:23:13 by hbechri           #+#    #+#             */
-/*   Updated: 2023/09/10 15:30:55 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/12 15:38:02 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int wld_mina(int *fd, int in_fd, t_command *cmd, t_env_lst *env)
     pid = fork();
     if (pid == 0)
     {
+		printf("wldmina\n");
         if (in_fd != -1)
         {
             dup2(in_fd, 0);
@@ -31,7 +32,7 @@ int wld_mina(int *fd, int in_fd, t_command *cmd, t_env_lst *env)
             close(fd[0]);
         if (!cmd)
             return (0);
-        redirections(cmd);
+        redirections(cmd, env);
         if (bt_checker(cmd))
         {
             exec_bt(cmd, env);
@@ -74,14 +75,14 @@ void	lonely_cmd(int *fd, int in_fd, t_command *cmd, t_env_lst *env)
 	if (pid == 0)
 	{
 		signal(SIGQUIT, SIG_DFL);
-		if (in_fd != 0)
+		if (in_fd != STDIN_FILENO)
 		{
-			dup2(in_fd, 0);
+			dup2(in_fd, STDIN_FILENO);
 			close(in_fd);
 		}
 		if (fd[1] > 2)
 			close(fd[1]);
-		redirections(cmd);
+		redirections(cmd, env);
 		if (cmd->cmd && bt_checker(cmd))
 		{
 			exec_bt(cmd, env);
@@ -93,7 +94,7 @@ void	lonely_cmd(int *fd, int in_fd, t_command *cmd, t_env_lst *env)
 			exit(0);
 		}
 	}
-	if (in_fd != 0)
+	if (in_fd != STDIN_FILENO)
 		close(in_fd);
 	return ;
 }
@@ -105,13 +106,13 @@ void	execution(t_command *cmd, t_env_lst **env)
 	
 	if(cmd)
 	{
-		in_fd = 0;
+		in_fd = STDIN_FILENO;
 		while(cmd->next)
 		{
 			pipe(fd);
 			wld_mina(fd, in_fd, cmd, *env);
 			close(fd[1]);
-			if (in_fd != 0)
+			if (in_fd != STDIN_FILENO)
 				close(in_fd);
 			if (fd[1] > 2)
 				close(fd[1]);

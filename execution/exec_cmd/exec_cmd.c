@@ -6,7 +6,7 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 18:56:03 by hbechri           #+#    #+#             */
-/*   Updated: 2023/09/08 23:06:09 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/12 15:48:55 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,6 @@ void	exec_cmd(char **cmd, t_env_lst *env)
 		return ;
 	else
 	{
-
 		path = path_from_env(envp);
 
 		if (path)

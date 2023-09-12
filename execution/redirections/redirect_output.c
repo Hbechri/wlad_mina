@@ -6,7 +6,7 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 15:38:05 by hbechri           #+#    #+#             */
-/*   Updated: 2023/09/08 15:38:07 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/12 15:47:41 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,18 @@
 void    redirect_output(t_command  *cmd)
 {
     t_redirection  *out;
+	int	fd;
 
 	out = cmd->redirection;
 	while (out)
 	{
 		if (out->type == OUT_ID)
 		{
-			out->fd = open(out->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-			if (out->fd == -1) // error
+			fd = open(out->file, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+			if (fd == -1) // error
 				return ;
-			dup2(out->fd, STDOUT_FILENO);
-			close(out->fd);
+			dup2(fd, STDOUT_FILENO);
+			close(fd);
 			break ;
 		}
 		out = out->next;
@@ -53,7 +54,7 @@ void    redirect_output(t_command  *cmd)
 //     // Creating and adding redirections
 //     t_redirections *out = malloc(sizeof(t_redirections));
 //     out->file = "output1.txt";
-//     out->fd = -1;
+//     fd = -1;
 //     out->type = OUT_ID;
 //     out->next = NULL;
 //     cmd->r_out = out;

@@ -6,7 +6,7 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 17:08:29 by amakhrou          #+#    #+#             */
-/*   Updated: 2023/09/10 18:21:48 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/12 15:49:25 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,13 @@
 # include <fcntl.h>
 # include <sys/wait.h>
 # include <signal.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <errno.h>
+# include <signal.h>
+# include <limits.h>
+# include <sys/wait.h>
+# include <dirent.h>
 
 extern int	g_exit_status;
 
@@ -60,7 +67,6 @@ typedef struct s_redirection
 	int						type;
 	char					*file;
 	char					*hdc_file;
-	int						fd;
 	struct s_redirection	*next;
 }						t_redirection;
 
@@ -146,10 +152,10 @@ void			mina(void);
 int 			wld_mina(int *fd, int in_fd, t_command *cmd, t_env_lst *env);
 void			execution(t_command *cmd, t_env_lst **env);
 void			exec_cmd(char **cmd, t_env_lst *env);
-void			heredoc(t_command *cmd);
+void			heredoc(t_command *cmd, t_env_lst *env);
 void			redirect_input(t_command  *cmd);
 void			redirect_output_append(t_command  *cmd);
 void			redirect_output(t_command  *cmd);
-void			redirections(t_command *cmd);
+void			redirections(t_command *cmd, t_env_lst *env);
 
 #endif

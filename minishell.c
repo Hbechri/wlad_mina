@@ -6,13 +6,13 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 17:17:14 by amakhrou          #+#    #+#             */
-/*   Updated: 2023/09/11 15:39:55 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/12 15:38:42 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int g_exit_status;
+int	g_exit_status;
 
 void	sig_int_handler()
 {
@@ -44,11 +44,9 @@ int main(int ac, char **av, char **env)
     char *input;
     t_env_lst   **env_copy;
     t_command   *cmd;
-    t_token *token;
 
 	(void)av;
-    (void)cmd;
-    (void)token;
+    cmd = NULL;
     ac_check(ac);
     env_copy = env_dyalna(env);
     set_signals();
@@ -60,9 +58,9 @@ int main(int ac, char **av, char **env)
             ft_putstr_fd("exit", 2);
             exit(1);
         }
-        add_history(input);
+        if (ft_isprint(input[0]))
+            add_history(input);
         cmd = parse(input, env_copy);
-        heredoc(cmd);
 		execution(cmd, env_copy);
     }
 }

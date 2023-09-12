@@ -6,7 +6,7 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 15:38:32 by hbechri           #+#    #+#             */
-/*   Updated: 2023/09/08 15:39:12 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/12 15:48:10 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,18 @@
 void    redirect_output_append(t_command  *cmd)
 {
     t_redirection  *append;
+    int fd;
 
     append = cmd->redirection;
     while (append)
     {
         if (append->type == APPEND_ID)
         {
-            append->fd = open(append->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
-            if (append->fd == -1) // error
+            fd = open(append->file, O_WRONLY | O_CREAT | O_APPEND, 0644);
+            if (fd == -1) // error
                 return ;
-            dup2(append->fd, STDOUT_FILENO);
-            close(append->fd);
+            dup2(fd, STDOUT_FILENO);
+            close(fd);
             break ;
         }
         append = append->next;

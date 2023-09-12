@@ -6,7 +6,7 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 18:59:23 by hbechri           #+#    #+#             */
-/*   Updated: 2023/09/11 16:33:52 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/12 15:51:44 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ char	*ignore_spaces(char *str)
 	return (without_spaces);
 }
 
-void	heredoc_boucle(t_redirection *heredoc, char *delimiter)
+void	heredoc_boucle(char *delimiter, int fd)
 {
 	char *line;
 
@@ -83,10 +83,11 @@ void	heredoc_boucle(t_redirection *heredoc, char *delimiter)
 		if (ft_strcmp(line, delimiter) == 0)
 			break ;
 		if (line)
-			write(heredoc->fd, line, ft_strlen(line));
-		write(heredoc->fd, "\n", 1);
+			write(fd, line, ft_strlen(line));
+		write(fd, "\n", 1);
 		free(line);
 	}
+	close(fd);
 	free(delimiter);
 }
 
@@ -108,42 +109,69 @@ void	pid_error(void)
 	exit(1);
 }
 
-void	set_heredoc_fd(t_redirection *heredoc)
+int	set_heredoc_fd(t_redirection *heredoc)
 {
 	char *heredoc_file;
+	int fd;
 
 	heredoc_file = heredoc_file_name();
 	heredoc->hdc_file = ft_strdup(heredoc_file);
 	free(heredoc_file);
-	heredoc->fd = open(heredoc->hdc_file, O_RDWR | O_CREAT | O_TRUNC, 0644);
+	fd = open(heredoc->hdc_file, O_RDWR | O_CREAT | O_TRUNC, 0644);
+	return (fd);
 }
 
-void	heredoc(t_command *cmd)
+int	get_exit_status(int status)
+{
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	else if (WIFSIGNALED(status))
+		return (WTERMSIG(status) + 128);
+	return (0);
+}
+
+int	wait_signal(int pid, int fd)
+{
+	int	status;
+
+	close(fd);
+	waitpid(pid, &status, 0);
+	g_exit_status = get_exit_status(status);
+	return (0);
+}
+
+void	heredoc(t_command *cmd, t_env_lst *env)
 {
 	t_redirection *heredoc;
 	char *delimiter;
+	int fd;
 	pid_t pid;
 
-	heredoc = cmd->redirection;
-	while (heredoc)
+	(void)env;
+	while (cmd)
 	{
-		if (heredoc->type == HERDOC_ID)
+		heredoc = cmd->redirection;
+		while(heredoc)
 		{
-			set_heredoc_fd(heredoc);
-			pid = fork();
-			if (pid == -1)
-				pid_error();
-			else if (pid == 0)
+			if (heredoc->type == HERDOC_ID)
 			{
-				signal(SIG_IGN, SIG_DFL);
-				delimiter = set_delimiter(heredoc);
-				heredoc_boucle(heredoc, delimiter);
-				close(heredoc->fd);
+				fd = set_heredoc_fd(heredoc);
+				pid = fork();
+				if (pid == -1)
+					pid_error();
+				else if (pid == 0)
+				{
+					signal(SIGINT, SIG_DFL);
+					signal(SIGINT, SIG_IGN);
+					delimiter = set_delimiter(heredoc);
+					heredoc_boucle(delimiter, fd);
+					exit(0);
+				}
+				wait_signal(pid, fd);
 			}
-			else
-				waitpid(pid, NULL, 0);
+			heredoc = heredoc->next;
 		}
-		heredoc = heredoc->next;
+		cmd = cmd->next;
 	}
 }
 
