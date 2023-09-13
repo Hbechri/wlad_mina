@@ -3,42 +3,44 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 18:59:23 by hbechri           #+#    #+#             */
-/*   Updated: 2023/09/12 23:03:14 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/13 17:30:26 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-int	is_quotes(char *str)
+// int	is_quotes(char *str)
+// {
+// 	int i;
+
+// 	i = 0;
+// 	while(str[i])
+// 	{
+// 		if (str[i] == '\'' || str[i] == '\"')
+// 			return (1);
+// 		i++;
+// 	}
+// 	return (0);
+// }
+
+// int	is_alpha_and_unserscore_char(char c)
+// {
+// 	if (ft_isalpha(c) == 1)
+// 		return (1);
+// 	else if (c == '_')
+// 		return (1);
+// 	return (0);
+// }
+
+int	is_alpha_and_underscore(char c)
 {
-	int i;
-
-	i = 0;
-	while(str[i])
-	{
-		if (str[i] == '\'' || str[i] == '\"')
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-int	is_alpha_and_underscore(char *str)
-{
-	int i;
-
-	i = 0;
-	while(str[i])
-	{
-		if (ft_isalpha(str[i]) == 1)
-			return (1);
-		else if (str[i] == '_')
-			return (1);
-		i++;
-	}
+	if (ft_isalpha(c) == 1)
+		return (1);
+	else if (c == '_')
+		return (1);
 	return (0);
 }
 
@@ -52,7 +54,7 @@ char	*dollar_word(char *str)
 	j = 0;
 	word = NULL;
 	while(str[i] && str[i] != ' ' && str[i] != '\t' && str[i] != '\0'
-		&& is_alpha_and_underscore(str + i) == 1)
+		&& is_alpha_and_underscore(str[i]) == 1)
 		i++;
 	word = ft_calloc(sizeof(char), (i + 1));
 	while (j < i)
@@ -78,10 +80,11 @@ char	*replace_with_value(char *line, char *word, t_env_lst **env)
 	tmp = ft_substr(line, 0, i);
 	tmp1 = ft_strjoin(tmp, value);
 	free(tmp);
-	tmp = ft_strjoin(tmp1, line + i + ft_strlen(word));
+	tmp = ft_strjoin(tmp1, line + i + 1 + ft_strlen(word));
 	free(tmp1);
 	return (tmp);
 }
+
 
 char	*expand_in_hdc(char *exp, t_env_lst **env)
 {
@@ -167,7 +170,7 @@ char	*ignore_spaces(char *str)
 	return (without_spaces);
 }
 
-void	heredoc_boucle(char *delimiter, int fd, t_env_lst **env, int expand)
+void	heredoc_boucle(char *delimiter, int fd, t_env_lst **env, t_command *cmd)
 {
 	char *line;
 	char *tmp;
@@ -181,13 +184,13 @@ void	heredoc_boucle(char *delimiter, int fd, t_env_lst **env, int expand)
 			break ;
 		if (line)
 		{
-			if (expand == 0)
+			if (cmd->dlm == 0)
 			{
 				tmp = expand_in_hdc(line, env);
 				write(fd, tmp, ft_strlen(tmp));
 				free(tmp);
 			}
-			else if (expand == 1)
+			else if (cmd->dlm == 1)
 				write(fd, line, ft_strlen(line));
 		}
 		write(fd, "\n", 1);
@@ -252,7 +255,6 @@ void	heredoc(t_command *cmd, t_env_lst *env)
 	char *delimiter;
 	int fd;
 	pid_t pid;
-	int expand;
 
 	while (cmd)
 	{
@@ -269,11 +271,8 @@ void	heredoc(t_command *cmd, t_env_lst *env)
 				{
 					signal(SIGINT, SIG_DFL);
 					signal(SIGINT, SIG_IGN);
-					expand = is_quotes(heredoc->file);
-					printf("delimiter = %s\n", heredoc->file);
-					printf("expand = %d\n", expand);
 					delimiter = set_delimiter(heredoc);
-					heredoc_boucle(delimiter, fd, &env, expand);
+					heredoc_boucle(delimiter, fd, &env, cmd);
 					exit(0);
 				}
 				wait_signal(pid, fd);

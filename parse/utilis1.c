@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utilis1.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 14:18:23 by amakhrou          #+#    #+#             */
-/*   Updated: 2023/09/11 21:07:44 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/13 17:26:21 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ t_token	*word_type_colect(t_lexer *lexer, t_env_lst **env_dyalna)
 	{
 		if (lexer->c == '\'' || lexer->c == '\"')
 		{
+			lexer->must_not_expand = 1;
 			s = join_string(lexer, lexer->c, env_dyalna);
 			val = ft_strjoin(val, s);
 			break ;

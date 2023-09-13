@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 17:08:29 by amakhrou          #+#    #+#             */
-/*   Updated: 2023/09/12 18:16:27 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/13 17:24:39 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ extern int	g_exit_status;
 typedef struct s_lexer
 {
 	char			*content;
+	int				must_not_expand;
 	int				size;
 	char			c;
 	int				i;
@@ -80,6 +81,7 @@ typedef struct s_env_lst
 typedef struct s_command
 {
 	char				**cmd;
+	int					dlm;
 	t_type				type;
 	t_env_lst			*envp;
 	t_redirection		*redirection;

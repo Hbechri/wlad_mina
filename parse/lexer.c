@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amakhrou <amakhrou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 17:51:46 by amakhrou          #+#    #+#             */
-/*   Updated: 2023/09/06 16:46:47 by amakhrou         ###   ########.fr       */
+/*   Updated: 2023/09/13 17:26:04 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ t_lexer	*init_lexer(char *content)
 	lexer->content = content;
 	lexer->size = ft_strlen(content);
 	lexer->i = 0;
+	lexer->error = 0;
+	lexer->must_not_expand = 0;
 	lexer->c = content[lexer->i];
 	return (lexer);
 }
@@ -51,9 +53,15 @@ t_token	*lexer_next_token(t_lexer *lexer, t_env_lst **env_dyalna)
 		if (!if_operator(lexer->c) && lexer->c != '\'' && lexer->c != '\"')
 			return (word_type_colect(lexer, env_dyalna));
 		if (lexer->c == '\"')
+		{
+			lexer->must_not_expand = 1;
 			return (string_type_collect(lexer, lexer->c, env_dyalna));
+		}
 		if (lexer->c == '\'')
+		{
+			lexer->must_not_expand = 1;
 			return (string_type_collect(lexer, lexer->c, env_dyalna));
+		}
 		return (operator_type(lexer));
 	}
 	return (NULL);
