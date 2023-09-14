@@ -6,7 +6,7 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 20:57:46 by hbechri           #+#    #+#             */
-/*   Updated: 2023/09/14 20:58:25 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/14 22:39:36 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,9 +56,8 @@ char	*replace_with_value(char *line, char *word, t_env_lst **env)
 		i++;
 	tmp = ft_substr(line, 0, i);
 	tmp1 = ft_strjoin(tmp, value);
-	free(tmp);
 	tmp = ft_strjoin(tmp1, line + i + 1 + ft_strlen(word));
-	free(tmp1);
+	free(value);
 	return (tmp);
 }
 

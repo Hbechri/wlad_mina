@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amakhrou <amakhrou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 14:24:24 by amakhrou          #+#    #+#             */
-/*   Updated: 2023/09/13 18:25:49 by amakhrou         ###   ########.fr       */
+/*   Updated: 2023/09/15 00:09:03 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ char	*expandcheck(t_lexer *lexer, char *s, t_env_lst **env_dyalna)
 	}
 	if ((lexer->c == ' ' ) || (s && s[0] == '\0'))
 	{
-		tmp = ft_strdup(" ");
+		tmp = ft_strdup("");
 		s = ft_strjoin(s, tmp);
 		free(tmp);
 	}
