@@ -6,7 +6,7 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 18:23:13 by hbechri           #+#    #+#             */
-/*   Updated: 2023/09/14 20:24:29 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/15 00:38:45 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@ int	wld_mina(int *fd, int in_fd, t_command *cmd, t_env_lst *env)
 	pid = fork();
 	if (pid == 0)
 	{
-		if (in_fd != -1)
+		signal(SIGQUIT, SIG_DFL);
+		if (in_fd != STDIN_FILENO)
 			just_dup(in_fd, STDIN_FILENO);
 		just_dup(fd[1], STDOUT_FILENO);
 		if (fd[0] > 2)
