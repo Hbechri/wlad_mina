@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 17:08:29 by amakhrou          #+#    #+#             */
-/*   Updated: 2023/09/13 17:24:39 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/14 21:29:47 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,22 +15,16 @@
 
 # include <string.h>
 # include <stdlib.h>
-# include <string.h>
 # include <stdio.h>
 # include "./libft/libft.h"
-# include <stdlib.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <unistd.h>
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <fcntl.h>
-# include <sys/wait.h>
 # include <signal.h>
-# include <sys/types.h>
-# include <sys/stat.h>
 # include <errno.h>
-# include <signal.h>
 # include <limits.h>
 # include <sys/wait.h>
 # include <dirent.h>
@@ -46,6 +40,17 @@ typedef struct s_lexer
 	int				i;
 	int				error;
 }				t_lexer;
+
+typedef enum e_excode
+{
+	EX_SUCCESS = 0,
+	EX_FAILURE = 1,
+	EX_BT_FAIL = 2,
+	EX_CNOT_EXEC = 126,
+	EX_CNOT_FIND = 127,
+	EX_BY_SIGNAL = 128,
+	EX_OUTOF_RANGE = 255
+}	t_excode;
 
 typedef enum e_type
 {
@@ -89,6 +94,7 @@ typedef struct s_command
 }				t_command;
 
 //libft_utilis
+char			*ft_strjoin_unfreeable(char *s1, char *s2);
 void			delete_node(t_env_lst *node);
 void			free_list(t_env_lst **env_lst);
 void			ft_lstadd_back(t_env_lst **list, t_env_lst *new);
@@ -138,8 +144,33 @@ t_token			*error_quotes(char *val, t_lexer *lexer);
 t_token			*string_type_collect(t_lexer *lexer, char c,
 					t_env_lst **env_dyalna);
 int				array_len(char **array);
+int				if_special_char(char c);
+t_token			*error_quotes_join(t_lexer *lexer);
+char			*norme_word_type_collect(t_lexer *lexer,
+					t_env_lst **env_dyalna);
+t_token			*free_value(char *val);
+void			free_redirections(t_redirection *rdr);
+void			free_env_lst(t_env_lst *env_lst);
+void			free_cmd(t_command *cmd);
 
 //execution
+int				is_alpha_and_underscore(char c);
+char			*dollar_word(char *str);
+char			*replace_with_value(char *line, char *word, t_env_lst **env);
+char			*expand_in_hdc(char *exp, t_env_lst **env);
+char			*remove_quotes(char *str);
+int				non_numeric(char c);
+char			*value(char *cmd);
+char			*keyword(char *cmd);
+int				alpha_and_underscore(char *key);
+int				is_valid_key(t_env_lst *env, char *key, char *val);
+void			export_error(char *key, char *val);
+void			no_such_file(char *cmd);
+void			cmd_not_found(char *cmd);
+void			is_directory(char *cmd);
+int				valid_cmd(char *cmd);
+char			**env_table(t_env_lst *env);
+void			just_dup(int fd, int std);
 int				cd_bt(char **av, t_env_lst *env);
 int				echo_bt(char **cmd);
 void			env_bt(t_env_lst *env_lst);
@@ -151,13 +182,20 @@ int				bt_checker(t_command *cmd);
 void			exec_bt(t_command *cmd, t_env_lst *env);
 void			lonely_cmd(int *fd, int in_fd, t_command *cmd, t_env_lst *env);
 void			mina(void);
-int 			wld_mina(int *fd, int in_fd, t_command *cmd, t_env_lst *env);
+int				wld_mina(int *fd, int in_fd, t_command *cmd, t_env_lst *env);
 void			execution(t_command *cmd, t_env_lst **env);
 void			exec_cmd(char **cmd, t_env_lst *env);
 void			heredoc(t_command *cmd, t_env_lst *env);
-void			redirect_input(t_command  *cmd);
-void			redirect_output_append(t_command  *cmd);
-void			redirect_output(t_command  *cmd);
-void			redirections(t_command *cmd, t_env_lst *env);
-
+void			redirect_input(t_command *cmd);
+void			redirect_output_append(t_command *cmd);
+void			redirect_output(t_command *cmd);
+void			redirections(t_command *cmd);
+char			*heredoc_file_name(void);
+char			*ignore_spaces(char *str);
+void			heredoc_boucle(char *delimiter, int fd,
+					t_env_lst **env, t_command *cmd);
+char			*set_delimiter(t_redirection *heredoc);
+void			pid_error(void);
+void			heredoc_setup(t_command *cmd,
+					t_env_lst *env, t_redirection *heredoc);
 #endif

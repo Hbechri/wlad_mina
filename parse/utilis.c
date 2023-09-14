@@ -6,16 +6,19 @@
 /*   By: amakhrou <amakhrou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:31:35 by amakhrou          #+#    #+#             */
-/*   Updated: 2023/09/06 16:47:15 by amakhrou         ###   ########.fr       */
+/*   Updated: 2023/09/13 13:10:00 by amakhrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_token	*free_value(char *val)
+char	*norme_join_word(t_lexer *lexer, t_env_lst **env_dyalna)
 {
-	free(val);
-	return (NULL);
+	char	*s;
+
+	s = expand_inside_quotes(lexer, env_dyalna);
+	lexer_back(lexer);
+	return (s);
 }
 
 char	*join_word(t_lexer *lexer, t_env_lst **env_dyalna)
@@ -30,16 +33,15 @@ char	*join_word(t_lexer *lexer, t_env_lst **env_dyalna)
 		{
 			s = join_string(lexer, lexer->c, env_dyalna);
 			val = ft_strjoin(val, s);
+			free(s);
 			break ;
 		}
 		else if (lexer->c == '$')
-		{
-			s = expand_inside_quotes(lexer, env_dyalna);
-			lexer_back(lexer);
-		}
+			s = norme_join_word(lexer, env_dyalna);
 		else
 			s = tokenz_value(lexer);
 		val = ft_strjoin(val, s);
+		free(s);
 		lexer_advance(lexer);
 	}
 	if (val[0] == '\0')

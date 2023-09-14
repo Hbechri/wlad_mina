@@ -6,7 +6,7 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 15:39:29 by hbechri           #+#    #+#             */
-/*   Updated: 2023/09/12 18:55:35 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/14 19:08:19 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ int	heredoc_file(t_redirection *redr)
 	if (in_fd == -1)
 	{
 		perror("open");
-		exit(1);
+		g_exit_status = 1;
+		exit(g_exit_status);
 	}
 	return (in_fd);
 }
@@ -37,50 +38,46 @@ int	get_input_redirection_in_fd(t_redirection *redr, int in_fd)
 	return (in_fd);
 }
 
-void	dup_redi_in(t_command *cmd_list, int in_fd)
+void	dup_redi_in(t_command *cmd, int in_fd)
 {
-	t_redirection	*redirection;
+	t_redirection	*heredoc;
+	int				check;
 
-	redirection = cmd_list->redirection;
-	while (redirection)
+	check = 0;
+	heredoc = cmd->redirection;
+	while (heredoc)
 	{
-		if (redirection->type == HERDOC_ID)
-		{
-			dup2(in_fd, STDIN_FILENO);
-			close(in_fd);
-		}
-		redirection = redirection->next;
+		if (heredoc->type == HERDOC_ID)
+			check = 1;
+		heredoc = heredoc->next;
+	}
+	if (check)
+	{
+		dup2(in_fd, STDIN_FILENO);
+		close(in_fd);
 	}
 }
 
-void	redirections(t_command *cmd, t_env_lst *env)
+void	redirections(t_command *cmd)
 {
 	t_redirection	*redirec;
 	t_command		*tmp;
 	int				in_fd;
 
-	(void)env;
-	in_fd = STDIN_FILENO;
 	tmp = cmd;
-	while (tmp)
+	redirec = tmp->redirection;
+	while (redirec)
 	{
-		redirec = tmp->redirection;
-		while(redirec)
-		{
-			if (redirec->type == IN_ID)
-				redirect_input(tmp);
-			else if (redirec->type == OUT_ID)
-				redirect_output(tmp);
-			else if (redirec->type == APPEND_ID)
-				redirect_output_append(tmp);
-			else if (redirec->type == HERDOC_ID)
-			{
-				// heredoc(tmp, env);
-				in_fd = get_input_redirection_in_fd(redirec, in_fd);
-				dup_redi_in(cmd, in_fd);
-			}
-			redirec = redirec->next;
-		}
-		tmp = tmp->next;
+		in_fd = STDIN_FILENO;
+		if (redirec->type == IN_ID)
+			redirect_input(tmp);
+		else if (redirec->type == OUT_ID)
+			redirect_output(tmp);
+		else if (redirec->type == APPEND_ID)
+			redirect_output_append(tmp);
+		else if (redirec->type == HERDOC_ID)
+			in_fd = get_input_redirection_in_fd(redirec, in_fd);
+		redirec = redirec->next;
 	}
+	dup_redi_in(cmd, in_fd);
 }

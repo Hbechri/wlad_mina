@@ -6,7 +6,7 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:30:21 by amakhrou          #+#    #+#             */
-/*   Updated: 2023/09/11 21:07:44 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/14 15:48:49 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	check_syntax(t_token **token)
 		current = token[i]->type;
 		if (before != WORD_ID && i != 0 && current != WORD_ID
 			&& before != PIPE_ID && current != PIPE_ID)
-				return (0);
+			return (0);
 		if (i == 0 && current == PIPE_ID)
 			return (0);
 		before = current;
@@ -43,6 +43,12 @@ int	error_msg(int flag)
 		ft_putstr_fd("syntax error near unexpected token\n", 2);
 	if (flag == 2)
 		ft_putstr_fd("syntax error open quotes\n", 2);
-	g_exit_status = 258;
+	g_exit_status = 2;
 	return (0);
+}
+
+t_token	*free_value(char *val)
+{
+	free(val);
+	return (NULL);
 }

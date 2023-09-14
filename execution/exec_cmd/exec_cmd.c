@@ -6,40 +6,20 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 18:56:03 by hbechri           #+#    #+#             */
-/*   Updated: 2023/09/12 15:48:55 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/14 21:21:16 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-char	**env_table(t_env_lst *env)
-{
-	char	**envp;
-	int	i;
-
-	i = 0;
-	envp = (char **)malloc(sizeof(char *) * (ft_lstsize(env) + 1));
-	if (!envp)
-		return(NULL);
-	while (env)
-	{
-		envp[i] = ft_strjoin(env->key, "=");
-		envp[i] = ft_strjoin(envp[i], env->value);
-		env = env->next;
-		i++;
-	}
-	envp[i] = NULL;
-	return(envp);
-}
-
 char	*path_from_env(char **envp)
 {
 	char	*path;
-	int	i;
+	int		i;
 
 	i = 0;
 	path = NULL;
-	while(envp[i])
+	while (envp[i])
 	{
 		if (ft_strnstr(envp[i], "PATH", 4))
 		{
@@ -51,13 +31,23 @@ char	*path_from_env(char **envp)
 	return (path);
 }
 
+char	*relative_path(char **cmd, char *splitted_paths)
+{
+	char	*tmp;
+	char	*tmp_path;
+
+	if (cmd[0][0] == '.' && cmd[0][1] == '/')
+		no_such_file(cmd[0]);
+	tmp_path = ft_strjoin(splitted_paths, "/");
+	tmp = ft_strjoin(tmp_path, cmd[0]);
+	return (tmp);
+}
+
 void	try_paths(char **splitted_paths, char **envp, char **cmd)
 {
-
-	char	*tmp_path;
-	char *tmp;
-	int	i;
-	int flag;
+	int		i;
+	int		flag;
+	char	*tmp;
 
 	i = 0;
 	flag = 0;
@@ -65,52 +55,59 @@ void	try_paths(char **splitted_paths, char **envp, char **cmd)
 	{
 		if (access(cmd[0], F_OK) == -1)
 		{
-			tmp_path = ft_strjoin(splitted_paths[i], "/");
-			tmp = ft_strjoin(tmp_path, cmd[0]);
+			tmp = relative_path(cmd, splitted_paths[i]);
 			if (access(tmp, F_OK) == 0)
 			{
 				flag = 1;
 				if (execve(tmp, cmd, envp) == -1)
-				{
-					ft_putstr_fd("minishell : ", 2);
-					ft_putstr_fd (cmd[0], 2);
-					ft_putstr_fd(" : No such file or directory\n", 2);
-					return ;
-				}
+					cmd_not_found(cmd[0]);
 			}
+			free(tmp);
 		}
 		else if (access(*cmd, F_OK) == 0)
 			execve(*cmd, cmd, envp);
 		i++;
 	}
 	if (flag == 0)
+		cmd_not_found(cmd[0]);
+}
+
+void	execute_command(char **cmd, char **envp)
+{
+	char	*path;
+	char	**splitted_paths;
+
+	if (valid_cmd(cmd[0]) == 1)
 	{
-		ft_putstr_fd("minishell : ", 2);
-		ft_putstr_fd (cmd[0], 2);
-		ft_putstr_fd(" : command not found\n", 2);
-		return ;
+		path = cmd[0];
+		if (opendir(path))
+			is_directory(cmd[0]);
+	}
+	path = path_from_env(envp);
+	if (path)
+	{
+		splitted_paths = ft_split(path + 5, ':');
+		try_paths(splitted_paths, envp, cmd);
+	}
+	else
+	{
+		if (access(cmd[0], F_OK) == 0)
+			execve(cmd[0], cmd, envp);
+		else
+			cmd_not_found(cmd[0]);
 	}
 }
 
 void	exec_cmd(char **cmd, t_env_lst *env)
 {
 	char	**envp;
-	char 	*path;
-	char 	**splitted_paths;
 
-
-	path = NULL;
 	envp = env_table(env);
 	if (cmd == NULL)
-		return ;
-	else
 	{
-		path = path_from_env(envp);
-
-		if (path)
-		{
-			splitted_paths = ft_split(path + 5, ':');
-			try_paths(splitted_paths, envp, cmd);
-		}
+		g_exit_status = 0;
+		exit (g_exit_status);
 	}
+	else
+		execute_command(cmd, envp);
 }

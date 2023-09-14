@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 15:25:40 by amakhrou          #+#    #+#             */
-/*   Updated: 2023/09/13 17:27:57 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/14 15:47:04 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,10 @@ t_command	*init_commands(void)
 
 	cmd = malloc(sizeof(t_command));
 	cmd->cmd = NULL;
-	cmd->dlm = 0;
 	cmd->redirection = NULL;
 	cmd->envp = NULL;
 	cmd->next = NULL;
+	cmd->dlm = 0;
 	return (cmd);
 }
 
@@ -112,8 +112,10 @@ t_command	*parse(char *line, t_env_lst **env_dyalna)
 	else if (lexer->error == 1)
 		error_msg(2);
 	else
+	{
 		cmd = create_cmd(token, cmd);
-	cmd->dlm = lexer->must_not_expand;
+		cmd->dlm = lexer->must_not_expand;
+	}
 	token_free(token);
 	free(lexer);
 	return (cmd);

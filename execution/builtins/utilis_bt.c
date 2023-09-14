@@ -6,7 +6,7 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 17:41:32 by hbechri           #+#    #+#             */
-/*   Updated: 2023/09/08 18:09:57 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/14 20:54:30 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,4 +46,11 @@ void	exec_bt(t_command *cmd, t_env_lst *env)
 		unset_bt(cmd->cmd, env);
 	else
 		return ;
+}
+
+int	non_numeric(char c)
+{
+	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_')
+		return (1);
+	return (0);
 }

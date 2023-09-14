@@ -6,7 +6,7 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 18:55:18 by hbechri           #+#    #+#             */
-/*   Updated: 2023/09/06 18:55:32 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/14 19:02:21 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,5 @@ int	ft_lstsize(t_env_lst *lst)
 		lst = lst->next;
 		i++;
 	}
-	return(i);
+	return (i);
 }

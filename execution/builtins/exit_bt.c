@@ -6,7 +6,7 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 18:34:47 by hbechri           #+#    #+#             */
-/*   Updated: 2023/09/11 21:24:17 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/14 19:34:03 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	exit_arg_flag(char **cmd)
 			num++;
 		j++;
 	}
-	if(num == j)
+	if (num == j)
 		flag = 1;
 	return (flag);
 }

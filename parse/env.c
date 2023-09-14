@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/05 15:31:16 by amakhrou          #+#    #+#             */
-/*   Updated: 2023/09/13 15:47:15 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/13 18:59:28 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,9 @@ char	*my_getenv(char *key, t_env_lst **env_dyalna)
 
 	new = our_getenv(key, env_dyalna);
 	if (new != NULL)
+	{
 		return (ft_strdup(new->value));
+	}
 	else
 		return (ft_strdup(""));
 }

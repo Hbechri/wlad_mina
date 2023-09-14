@@ -6,7 +6,7 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 17:17:14 by amakhrou          #+#    #+#             */
-/*   Updated: 2023/09/12 18:55:19 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/14 19:24:40 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,9 @@
 
 int	g_exit_status;
 
-void	sig_int_handler()
+void	sig_int_handler(int s)
 {
+	(void)s;
 	write(1, "\n", 1);
 	rl_replace_line("", 0);
 	rl_on_new_line();
@@ -39,29 +40,31 @@ void	ac_check(int ac)
 	}
 }
 
-int main(int ac, char **av, char **env)
+int	main(int ac, char **av, char **env)
 {
-    char *input;
-    t_env_lst   **env_copy;
-    t_command   *cmd;
+	char		*input;
+	t_env_lst	**env_copy;
+	t_command	*cmd;
 
 	(void)av;
-    cmd = NULL;
-    ac_check(ac);
-    env_copy = env_dyalna(env);
-    set_signals();
-    while(1)
-    {
-        input = readline("minishell : ");
-        if(!input)
-        {
-            ft_putstr_fd("exit", 2);
-            exit(1);
-        }
-        if (ft_isprint(input[0]))
-            add_history(input);
-        cmd = parse(input, env_copy);
-        heredoc(cmd, *env_copy);
+	cmd = NULL;
+	ac_check(ac);
+	env_copy = env_dyalna(env);
+	set_signals();
+	while (1)
+	{
+		input = readline("minishell : ");
+		if (!input)
+		{
+			ft_putstr_fd("exit", 2);
+			exit(1);
+		}
+		if (ft_isprint(input[0]))
+			add_history(input);
+		cmd = parse(input, env_copy);
+		heredoc(cmd, *env_copy);
 		execution(cmd, env_copy);
-    }
+		free_cmd(cmd);
+		free(input);
+	}
 }

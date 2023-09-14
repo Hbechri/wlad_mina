@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: amakhrou <amakhrou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 17:41:42 by amakhrou          #+#    #+#             */
-/*   Updated: 2023/09/06 17:16:50 by amakhrou         ###   ########.fr       */
+/*   Updated: 2023/09/14 17:54:08 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,6 @@ char	*ft_strjoin(char *s1, char *s2)
 		p[i++] = s2[y++];
 	}
 	p[i] = '\0';
-	// free(s1);
+	free(s1);
 	return (p);
 }

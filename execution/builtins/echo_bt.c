@@ -6,28 +6,17 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/18 18:34:33 by hbechri           #+#    #+#             */
-/*   Updated: 2023/09/10 18:13:26 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/14 21:09:56 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../minishell.h"
 
-typedef enum e_excode
-{
-	EX_SUCCESS = 0,
-	EX_FAILURE = 1,
-	EX_BT_FAIL = 2,
-	EX_CNOT_EXEC = 126,
-	EX_CNOT_FIND = 127,
-	EX_BY_SIGNAL = 128,
-	EX_OUTOF_RANGE = 255
-}	t_excode;
-
 int	option_checker(char *cmd, char option)
 {
 	int	i;
 
-	i = 2;
+	i = 1;
 	if (cmd[0] != '-' || ft_strlen(cmd) < 2)
 		return (0);
 	while (cmd[i])
@@ -39,7 +28,7 @@ int	option_checker(char *cmd, char option)
 	return (2);
 }
 
-int echo_bt(char **cmd)
+int	echo_bt(char **cmd)
 {
 	int		i;
 	int		nl_flag;

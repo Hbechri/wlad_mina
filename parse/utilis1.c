@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utilis1.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: amakhrou <amakhrou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 14:18:23 by amakhrou          #+#    #+#             */
-/*   Updated: 2023/09/13 17:26:21 by marvin           ###   ########.fr       */
+/*   Updated: 2023/09/13 18:25:26 by amakhrou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,23 @@
 
 char	*after_quotes(t_lexer *lexer, char *val, t_env_lst **env_dyalna)
 {
+	char	*s;
+	char	*tmp;
+
 	if (lexer->c == '\'' || lexer->c == '\"')
-		return (ft_strjoin(val, join_string(lexer, lexer->c, env_dyalna)));
+	{
+		s = join_string(lexer, lexer->c, env_dyalna);
+		tmp = ft_strjoin(val, s);
+		free(s);
+		return (tmp);
+	}
 	else
-		return (ft_strjoin(val, join_word(lexer, env_dyalna)));
+	{
+		s = join_word(lexer, env_dyalna);
+		tmp = ft_strjoin(val, s);
+		free(s);
+		return (tmp);
+	}
 }
 
 char	*join_string(t_lexer *lexer, char c, t_env_lst **env_dyalna)
@@ -37,10 +50,11 @@ char	*join_string(t_lexer *lexer, char c, t_env_lst **env_dyalna)
 		else
 			s = tokenz_value(lexer);
 		val = ft_strjoin(val, s);
+		free(s);
 		lexer_advance(lexer);
 	}
 	if (lexer->c != c)
-		lexer->error = 1;
+		error_quotes_join(lexer);
 	lexer_advance(lexer);
 	if (!if_operator(lexer->c) && !is_space(lexer->c) && lexer->c != '\0')
 		val = after_quotes(lexer, val, env_dyalna);
@@ -60,16 +74,15 @@ t_token	*word_type_colect(t_lexer *lexer, t_env_lst **env_dyalna)
 			lexer->must_not_expand = 1;
 			s = join_string(lexer, lexer->c, env_dyalna);
 			val = ft_strjoin(val, s);
+			free(s);
 			break ;
 		}
 		else if (lexer->c == '$')
-		{
-			s = expand_inside_word(lexer, env_dyalna);
-			lexer_back(lexer);
-		}
+			s = norme_word_type_collect(lexer, env_dyalna);
 		else
 			s = tokenz_value(lexer);
 		val = ft_strjoin(val, s);
+		free(s);
 		lexer_advance(lexer);
 	}
 	if (val[0] == '\0')
@@ -102,6 +115,7 @@ t_token	*string_type_collect(t_lexer *lexer, char c, t_env_lst **env_dyalna)
 		else
 			s = tokenz_value(lexer);
 		val = ft_strjoin(val, s);
+		free(s);
 		lexer_advance(lexer);
 	}
 	if (lexer->c != c)
