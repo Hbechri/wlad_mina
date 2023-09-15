@@ -6,7 +6,7 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 18:56:03 by hbechri           #+#    #+#             */
-/*   Updated: 2023/09/14 21:21:16 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/15 01:12:42 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,14 +74,16 @@ void	try_paths(char **splitted_paths, char **envp, char **cmd)
 
 void	execute_command(char **cmd, char **envp)
 {
+	DIR		*dir;
 	char	*path;
 	char	**splitted_paths;
 
 	if (valid_cmd(cmd[0]) == 1)
 	{
 		path = cmd[0];
-		if (opendir(path))
-			is_directory(cmd[0]);
+		dir = opendir(path);
+		if (dir)
+			is_directory(cmd[0], dir);
 	}
 	path = path_from_env(envp);
 	if (path)

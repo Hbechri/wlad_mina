@@ -6,7 +6,7 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 17:08:29 by amakhrou          #+#    #+#             */
-/*   Updated: 2023/09/14 21:29:47 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/15 01:12:09 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,7 @@ int				is_valid_key(t_env_lst *env, char *key, char *val);
 void			export_error(char *key, char *val);
 void			no_such_file(char *cmd);
 void			cmd_not_found(char *cmd);
-void			is_directory(char *cmd);
+void			is_directory(char *cmd, DIR *dir);
 int				valid_cmd(char *cmd);
 char			**env_table(t_env_lst *env);
 void			just_dup(int fd, int std);

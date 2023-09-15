@@ -6,7 +6,7 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 20:39:26 by hbechri           #+#    #+#             */
-/*   Updated: 2023/09/14 21:09:40 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/15 01:11:46 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,9 @@ void	cmd_not_found(char *cmd)
 	exit (g_exit_status);
 }
 
-void	is_directory(char *cmd)
+void	is_directory(char *cmd, DIR *dir)
 {
+	closedir(dir);
 	ft_putstr_fd("minishell : ", 2);
 	ft_putstr_fd(cmd, 2);
 	ft_putstr_fd(" : Is a directory\n", 2);
