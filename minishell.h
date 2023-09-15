@@ -6,7 +6,7 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 17:08:29 by amakhrou          #+#    #+#             */
-/*   Updated: 2023/09/15 01:38:42 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/15 02:46:41 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,7 @@ void			free_env_lst(t_env_lst *env_lst);
 void			free_cmd(t_command *cmd);
 
 //execution
+void			cd_error(char *cmd, char *old_pwd);
 int				is_alpha_and_underscore(char c);
 char			*dollar_word(char *str);
 char			*replace_with_value(char *line, char *word, t_env_lst **env);

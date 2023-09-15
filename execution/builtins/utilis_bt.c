@@ -6,7 +6,7 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/08 17:41:32 by hbechri           #+#    #+#             */
-/*   Updated: 2023/09/14 20:54:30 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/15 02:46:22 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,13 @@ int	non_numeric(char c)
 	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || c == '_')
 		return (1);
 	return (0);
+}
+
+void	cd_error(char *cmd, char *old_pwd)
+{
+	free(old_pwd);
+	ft_putstr_fd("cd: ", 2);
+	ft_putstr_fd(cmd, 2);
+	perror(" ");
+	g_exit_status = 1;
 }

@@ -6,7 +6,7 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/08 14:16:59 by amakhrou          #+#    #+#             */
-/*   Updated: 2023/09/15 01:45:18 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/15 02:45:56 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ size_t	ft_strlen(const char *s)
 	size_t	i;
 
 	i = 0;
-	if(s == NULL)
+	if (s == NULL)
 		return (0);
 	while (s[i])
 		i++;

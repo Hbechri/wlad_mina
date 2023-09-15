@@ -12,6 +12,30 @@
 
 #include "../../minishell.h"
 
+int	pwd_oldpwd_checker(t_env_lst *env, char *old_pwd, char *current_pwd)
+{
+	t_env_lst	*tmp;
+
+	tmp = env;
+	if (!tmp)
+	{
+		free(current_pwd);
+		free(old_pwd);
+		return (0);
+	}
+	while (tmp)
+	{
+		if (strcmp(env->key, "PWD") != 0 || strcmp(env->key, "OLDPWD") != 0)
+		{
+			free(current_pwd);
+			free(old_pwd);
+			return (0);
+		}
+		tmp = tmp->next;
+	}
+	return (1);
+}
+
 void	*home_path(t_env_lst **env)
 {
 	t_env_lst	*tmp;
@@ -31,12 +55,8 @@ void	old_and_current_wd(t_env_lst *env, char *old_pwd, char *current_pwd)
 	t_env_lst	*tmp;
 
 	tmp = env;
-	if (!env)
-	{
-		free(old_pwd);
-		free(current_pwd);
+	if (pwd_oldpwd_checker(env, old_pwd, current_pwd) == 0)
 		return ;
-	}
 	while (tmp)
 	{
 		if (ft_strcmp("OLDPWD", tmp->key) == 0)
@@ -73,15 +93,6 @@ int	get_home_dir(t_env_lst *env)
 		return (g_exit_status);
 	}
 	return (g_exit_status);
-}
-
-void	cd_error(char *cmd, char *old_pwd)
-{
-	free(old_pwd);
-	ft_putstr_fd("cd: ", 2);
-	ft_putstr_fd(cmd, 2);
-	perror(" ");
-	g_exit_status = 1;
 }
 
 int	cd_bt(char **cmd, t_env_lst *env)
