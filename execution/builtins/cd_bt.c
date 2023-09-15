@@ -31,6 +31,12 @@ void	old_and_current_wd(t_env_lst *env, char *old_pwd, char *current_pwd)
 	t_env_lst	*tmp;
 
 	tmp = env;
+	if (!env)
+	{
+		free(old_pwd);
+		free(current_pwd);
+		return ;
+	}
 	while (tmp)
 	{
 		if (ft_strcmp("OLDPWD", tmp->key) == 0)
