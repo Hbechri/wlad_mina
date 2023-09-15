@@ -6,7 +6,7 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/14 20:39:26 by hbechri           #+#    #+#             */
-/*   Updated: 2023/09/15 01:11:46 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/15 01:58:03 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,19 +55,26 @@ int	valid_cmd(char *cmd)
 
 char	**env_table(t_env_lst *env)
 {
-	char	**envp;
-	int		i;
+	char		**envp;
+	int			i;
+	int			j;
+	t_env_lst	*tmp;
 
 	i = 0;
-	envp = (char **)malloc(sizeof(char *) * (ft_lstsize(env) + 1));
-	if (!envp)
-		return (NULL);
-	while (env)
+	j = 0;
+	tmp = env;
+	while (tmp)
 	{
-		envp[i] = ft_strjoin(env->key, "=");
-		envp[i] = ft_strjoin(envp[i], env->value);
-		env = env->next;
 		i++;
+		tmp = tmp->next;
+	}
+	envp = malloc(sizeof(char *) * (i + 1));
+	tmp = env;
+	while (tmp)
+	{
+		envp[j] = ft_strjoin3(tmp->key, "=", tmp->value);
+		j++;
+		tmp = tmp->next;
 	}
 	envp[i] = NULL;
 	return (envp);

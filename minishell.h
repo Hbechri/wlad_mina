@@ -6,7 +6,7 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/04 17:08:29 by amakhrou          #+#    #+#             */
-/*   Updated: 2023/09/15 01:12:09 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/15 01:38:42 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ typedef struct s_command
 }				t_command;
 
 //libft_utilis
+char			*ft_strjoin3(char *s1, char *s2, char *s3);
 char			*ft_strjoin_unfreeable(char *s1, char *s2);
 void			delete_node(t_env_lst *node);
 void			free_list(t_env_lst **env_lst);

@@ -45,7 +45,6 @@ void	old_and_current_wd(t_env_lst *env, char *old_pwd, char *current_pwd)
 		}
 		tmp = tmp->next;
 	}
-	free(old_pwd);
 }
 
 int	get_home_dir(t_env_lst *env)
@@ -97,7 +96,6 @@ int	cd_bt(char **cmd, t_env_lst *env)
 	{
 		current_pwd = getcwd(buf, 0);
 		old_and_current_wd(env, old_pwd, current_pwd);
-		free(current_pwd);
 		g_exit_status = 0;
 		return (g_exit_status);
 	}

@@ -6,7 +6,7 @@
 /*   By: hbechri <hbechri@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/24 17:41:42 by amakhrou          #+#    #+#             */
-/*   Updated: 2023/09/14 17:54:08 by hbechri          ###   ########.fr       */
+/*   Updated: 2023/09/15 01:30:20 by hbechri          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ char	*ft_strjoin(char *s1, char *s2)
 	i = 0;
 	x = 0;
 	y = 0;
+	if (!s1 || !s2)
+		return (NULL);
 	l = ft_strlen(s1) + ft_strlen(s2);
 	p = malloc(l + 1);
 	if (p == NULL)
